@@ -8,6 +8,8 @@ var host = "http://localhost/TDT/";
 var tdt_resource = null;
 var tdt_package = null;
 
+var last_arr = new Array();
+
 $(document).ready(function() {
     //    $("#left_pane").dialog({
     //        position:  ['left','top'],
@@ -21,8 +23,16 @@ $(document).ready(function() {
         applyDefaultStyles: true
     });
 
+    $("#search_button").click(searchButtonHandler);
+
     $.getJSON(host+"TDTInfo/Resources.json",null,successHandler);
+    
+    
 });
+
+function searchButtonHandler(event){
+    lookup($("input[name=search_field]").text());
+}
 
 function successHandler(data){
     
@@ -72,80 +82,117 @@ function resourceClicked(event){
     tdt_resource = $(this).text();
     tdt_package = $(this).parents("li").children(".folder").text();
     
-       
-    var url = host+"TDTInfo/Ontology/"+tdt_package+"/"+tdt_resource+".rjson";
+    var url = host+"TDTInfo/Ontology/"+tdt_package+"/"+tdt_resource+".rdf";
     $.ajax({
         url:url,
         success:ontologyLoaded,
         statusCode:{
             457:ontologyNonExisting
-        }
+        },
+        error:ontologyNonExisting
     });
     
 }
 
 function ontologyNonExisting(){
+    alert('here');
     $("#no_ontology .title").text("The resource "+tdt_package+"/"+tdt_resource+" has no ontology");
-    $("#no_ontology .content").text("Would you like to create one?");
+    $("#no_ontology .content").html("Would you like to <a href='javascript:createClicked()'>create</a> one?");
     $("#no_ontology").show();
 }
 
-function ontologyLoaded(data){
-    var ont = $.rdf().load(data, {});
-    $.rdf()
-    .where('?person a owl:Class')
-    .each(function () {
-        var person = this.person.value;
-        $('#ontology').append('<li><a href="' + person + '"></a></li>');
+function createClicked(){
+    var url = host+"TDTInfo/Ontology/"+tdt_package+"/"+tdt_resource;
+    $.post(url, {
+        
+        
+    }, function(){
+        
     });
-    
-    
-    
-
-//    jOWL.parse(data,{});
-//
-//    //var tree = $('#ontology').owl_treeview({rootThing: true});
-//
-//    var ontology = jOWL(tdt_resource);
-//    ontology.bind($("#ontology"));
-//    alert(ontology.jnode);
-
-//tree.propertyChange(ontology);
-//tree.broadcast(ontology);
-//    var last_ul = null;
-//    var last_li = null;
-//    var arr_temp = new Array();
-//    $.each(data, 
-//        function(i,item){
-//            var li  = $("<li/>");
-//            var li_span = $("<span/>");
-//
-//            
-//            arr = i.split("/");
-//            
-//            var d = arr.length - arr_temp.length;
-//            
-//            if (d>0){
-//                last_ul = $("<ul/>");
-//                
-//                if (last_li)
-//                    last_ul.appendTo(last_li);
-//                else
-//                    last_ul.appendTo("#right_pane");
-//                
-//                li_span.text(arr[arr_temp.length]);
-//                
-//            } else if (d == 0){
-//                li_span.text(arr[arr.length-1]);
-//            } else if (d < 0){
-//                li_span.text(arr[arr.length+d]);
-//            }
-//            arr_temp = arr;
-//            li_span.appendTo(li);
-//            li.appendTo(last_ul);
-//            last_li = li;
-//        }
-//        );
-      
 }
+
+function ontologyLoaded(data){
+    var db = $.rdf().load(data, {});
+    db.base(data.documentElement.baseURI);
+    
+    var path_arr = new Array();
+    
+    var cnt = 0;
+    
+    var result = db
+    .prefix('owl','http://www.w3.org/2002/07/owl#')
+    .prefix('rdf','http://www.w3.org/1999/02/22-rdf-syntax-ns#')
+    .where('?dataclass a owl:Class')
+    .each(function () {
+        var path = this.dataclass.value.toString();
+        path = path.substring(db.base().length);
+        path_arr[cnt] = path;
+        cnt++;
+    })
+    .end()
+    .where('?dataproperty a rdf:Property')
+    .each(function () {
+        var path = this.dataproperty.value.toString();
+        path = path.substring(db.base().length);
+        path_arr[cnt] = path;
+        cnt++;
+    })
+    
+    $('#ontology').empty();
+    
+    if (path_arr.length == 0)
+        ontologyNonExisting();
+    else
+        processDataModel(path_arr);
+}
+
+function processDataModel(path_arr){
+    var input = path_arr;
+    var output = [];
+    for (var i = 0; i < input.length; i++) {
+        var chain = input[i].split("/");
+        var currentNode = output;
+        for (var j = 0; j < chain.length; j++) {
+            var wantedNode = chain[j];
+            var lastNode = currentNode;
+            for (var k = 0; k < currentNode.length; k++) {
+                if (currentNode[k].name == wantedNode) {
+                    currentNode = currentNode[k].nodes;
+                    break;
+                }
+            }
+            // If we couldn't find an item in this list of children
+            // that has the right name, create one:
+            if (lastNode == currentNode) {
+                var newNode = currentNode[k] = {
+                    name: wantedNode, 
+                    nodes: []
+                };
+                currentNode = newNode.nodes;
+            }
+        }
+    }
+    
+    $('#ontology').append(parseNodes(output));
+    $('#ontology').treeview({
+        animated: "fast",
+        collapsed: false
+    });
+}
+
+function parseNodes(nodes) { // takes a nodes array and turns it into a <ol>
+    var ul = $('<ul/>');
+    for(var i=0; i<nodes.length; i++) {
+        ul.append(parseNode(nodes[i]));
+    }
+    return ul;
+}
+
+function parseNode(node) { // takes a node object and turns it into a <li>
+    var li = $('<li/>');
+    li.text(node.name);
+    if(node.nodes) li.append(parseNodes(node.nodes));
+    return li;
+}
+
 

@@ -10,13 +10,13 @@ and open the template in the editor.
         <link href="semantifier_style.css" rel="stylesheet" />
         <link href="lib/jquery-treeview/jquery.treeview.css" rel="stylesheet" />
         <link href="lib/jquery-ui/css/cupertino/jquery-ui-1.8.16.custom.css" rel="stylesheet" />
-
         <script src="lib/jquery-1.6.4.js" ></script>
         <script src="lib/jquery-ui/js/jquery-ui-1.8.16.custom.min.js"></script>     
         <script src="lib/jquery-layout/jquery.layout.js"></script>
         <script src="lib/jquery-treeview/jquery.treeview.js" ></script>
         <script src="lib/rdfquery/dist/js/jquery.rdfquery.core-1.0.js"></script>
         <script src="js/data_access.js" ></script>
+        <script src="js/vocabulary_lookup.js" ></script>
     </head>
     <body>
         <div id="left_pane" class="ui-layout-west" title="Resources">
@@ -37,9 +37,15 @@ and open the template in the editor.
             <div id="ontology">
                 
             </div>
+                    
         </div>
         <div id="right_pane" class="ui-layout-east" title="Ontology">
-
+            <div><input type="text" name="search_field" value="" /></div>
+            <div>
+                <input type="button" value="Search" name="search_button" />
+            </div>
+            <div id="search_result">
+            </div>
         </div>
 
     </body>
