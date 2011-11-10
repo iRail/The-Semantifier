@@ -11,7 +11,7 @@ root {
     display: block;
 }
 
-span.button {
+.button {
     background-image: -moz-linear-gradient(top, #ffffff, #dbdbdb);
     background-image: -webkit-gradient(linear,left top,left bottom,
         color-stop(0, #ffffff),color-stop(1, #dbdbdb));
@@ -37,7 +37,7 @@ span.button {
     font-weight: bold;
 }
 
-span.button:hover {
+.button:hover {
     background-image: -moz-linear-gradient(top, #ffffff, #eeeeee);
     background-image: -webkit-gradient(linear,left top,left bottom,
         color-stop(0, #ffffff),color-stop(1, #eeeeee));
@@ -61,15 +61,15 @@ span.button:hover {
     margin-top: 1px;
 }*/
 
-span.button {
+.button {
     border: 1px solid #979797;
 }
 
-span.button.icon {
+.button.icon {
     padding-left: 11px;
 }
 
-span.button.icon span{
+.button.icon span{
     padding-left: 36px;
     background: url(images/open-source-icons/PNG/blue/tag.png) no-repeat 0 -4px;
 }

@@ -185,6 +185,7 @@ function parseNodes(nodes) { // takes a nodes array and turns it into a <ol>
     for(var i=0; i<nodes.length; i++) {
         ul.append(parseNode(nodes[i]));
     }
+    ul.append(getNewButton());
     return ul;
 }
 
@@ -195,4 +196,26 @@ function parseNode(node) { // takes a node object and turns it into a <li>
     return li;
 }
 
+function getNewButton(){
+    var a = $("<a/>").button();
+    a.text("Add new member...");
+    
+    var txt = $("input:text");
+    txt.keyPress(function(){
+ 
+    });
+    
+    txt.hide();
+    
+    var li = $('<li/>').append(a);
+    li.append(txt);
+    
+    a.click(function(){
+        $(this).hide();
+        txt.show();
+    });
+    
+    
+    return li;
+}
 
