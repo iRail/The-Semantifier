@@ -4,6 +4,9 @@
  */
 
 var host = "http://localhost/TDT/";
+var api_usr = "tdtusr";
+var api_psw = "tdtusr";
+
 
 var tdt_resource = null;
 var tdt_package = null;
@@ -11,19 +14,18 @@ var tdt_package = null;
 var last_arr = new Array();
 
 $(document).ready(function() {
-    //    $("#left_pane").dialog({
-    //        position:  ['left','top'],
-    //        draggable: false,
-    //        resizable:false
-    //    });
-    
+   
     $("#no_ontology").hide();
+    
+    $("#new_member").hide();
 
-    $("body").layout({
+    /*$("body").layout({
         applyDefaultStyles: true
-    });
+    });*/
 
     $("#search_button").click(searchButtonHandler);
+    
+    init_vocabulary_lookup();
 
     $.getJSON(host+"TDTInfo/Resources.json",null,successHandler);
     
@@ -82,6 +84,10 @@ function resourceClicked(event){
     tdt_resource = $(this).text();
     tdt_package = $(this).parents("li").children(".folder").text();
     
+    loadOntology();
+}
+
+function loadOntology(){
     var url = host+"TDTInfo/Ontology/"+tdt_package+"/"+tdt_resource+".rdf";
     $.ajax({
         url:url,
@@ -91,13 +97,10 @@ function resourceClicked(event){
         },
         error:ontologyNonExisting
     });
-    
 }
 
 function ontologyNonExisting(){
-    alert('here');
     $("#no_ontology .title").text("The resource "+tdt_package+"/"+tdt_resource+" has no ontology");
-    $("#no_ontology .content").html("Would you like to <a href='javascript:createClicked()'>create</a> one?");
     $("#no_ontology").show();
 }
 
@@ -106,9 +109,9 @@ function createClicked(){
     $.post(url, {
         
         
-    }, function(){
+        }, function(){
         
-    });
+        });
 }
 
 function ontologyLoaded(data){
@@ -173,49 +176,106 @@ function processDataModel(path_arr){
         }
     }
     
-    $('#ontology').append(parseNodes(output));
+    $('#ontology').append(parseNodes(output,"0"));
     $('#ontology').treeview({
         animated: "fast",
         collapsed: false
     });
 }
 
-function parseNodes(nodes) { // takes a nodes array and turns it into a <ol>
+function parseNodes(nodes,uid) { // takes a nodes array and turns it into a <ol>
     var ul = $('<ul/>');
     for(var i=0; i<nodes.length; i++) {
-        ul.append(parseNode(nodes[i]));
+        ul.append(parseNode(nodes[i],uid+1));
     }
-    ul.append(getNewButton());
+    if (uid != "0")
+        ul.append(getNewButton(uid));
     return ul;
 }
 
-function parseNode(node) { // takes a node object and turns it into a <li>
+function parseNode(node,uid) { // takes a node object and turns it into a <li>
     var li = $('<li/>');
-    li.text(node.name);
-    if(node.nodes) li.append(parseNodes(node.nodes));
+    var lbl = $("<span class='data_member' />");
+    lbl.text(node.name);
+    lbl.droppable({ hoverClass: 'member_hover', scope: 'mapping'});
+    li.append(lbl);
+    if(node.nodes) li.append(parseNodes(node.nodes,uid));
     return li;
 }
 
-function getNewButton(){
-    var a = $("<a/>").button();
+function getNewButton(uid){
+    
+    var a = $("<a/>");
+    a.addClass("new_member_button");
     a.text("Add new member...");
     
-    var txt = $("input:text");
-    txt.keyPress(function(){
- 
-    });
-    
-    txt.hide();
-    
     var li = $('<li/>').append(a);
-    li.append(txt);
+        
+    var new_member = $("<div id='new_member"+uid+"' class='new_member'/>");
+    li.append(new_member);
     
     a.click(function(){
         $(this).hide();
-        txt.show();
+        $("#new_member"+uid).show();
+        $("#new_member_text"+uid).focus();
     });
     
+    var txt = $("<input id='new_member_text"+uid+"' type='text'/>");
+   
+    txt.keydown(function(event){
+        if ( event.which == 13 ) {
+            var p = txt.parents("li");
+            var path = "";
+            p.each(function(){
+                var span = $(this).children("span");
+                if (span.length>0)
+                    path = span.text()+"/"+path;
+            });
+            addToOntology(path+txt.val(),$("input[@name='new_member_type"+uid+"']:checked").val());
+        }
+    });
+    
+    new_member.keydown(function(event){
+        if ( event.which == 27 ){
+            txt.text('');
+            new_member.hide();
+            a.show();
+        }     
+    });
+
+    
+    new_member.append(txt);
+    $("<label for='new_member_class"+uid+"'/>").text("Class: ").appendTo(new_member);
+    $("<input type='radio' name='new_member_type"+uid+"' id='new_member_class"+uid+"' value='class'/>").appendTo(new_member).checked;
+    $("<label for='new_member_property"+uid+"'/>").text("Property: ").appendTo(new_member);
+    $("<input type='radio' name='new_member_type"+uid+"' id='new_member_property"+uid+"' value='property'/>").appendTo(new_member);
+    
+    new_member.hide();
     
     return li;
 }
 
+function addToOntology(member_path,member_type){
+    var url = host+"TDTInfo/Ontology/"+tdt_package+"/"+member_path;
+    alert(member_type);       
+    $.ajax({
+        url:url,
+        data:{
+            type:member_type
+        },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader ("Authorization", "Basic " + $.base64.encode(api_usr + ":" + api_psw));
+        },
+        success:memberPutSuccess,
+        error:memberPutError,
+        type:"PUT"
+    });
+    
+}
+
+function memberPutSuccess(){
+    loadOntology();
+}
+function memberPutError(data){
+    alert("Something is wrong! "+data);
+}

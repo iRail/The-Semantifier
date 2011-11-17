@@ -17,6 +17,9 @@ and open the template in the editor.
         <script src="lib/rdfquery/dist/js/jquery.rdfquery.core-1.0.js"></script>
         <script src="js/data_access.js" ></script>
         <script src="js/vocabulary_lookup.js" ></script>
+        <script src="js/vocabularies.js"></script>
+        <script src="lib/base64/jquery.base64.js"></script>
+
     </head>
     <body>
         <div id="left_pane" class="ui-layout-west" title="Resources">
@@ -29,24 +32,33 @@ and open the template in the editor.
 
             <div id="no_ontology" class="box">
                 <span class="title"></span>
-                <div class="content">
-
-
-                </div>
+                <div class="content">Would you like to <a href='javascript:createClicked()'>create</a> one?</div>
             </div>
             <div id="ontology">
-                
+
             </div>
-                    
+
+
         </div>
         <div id="right_pane" class="ui-layout-east" title="Ontology">
-            <div><input type="text" name="search_field" value="" /></div>
+            <!--<div><input type="text" name="search_field" value="" /></div>
             <div>
                 <input type="button" value="Search" name="search_button" />
             </div>
+            -->
+            <div id="vocabulary_lookup">
+                <span class="subtitle">Choose vocabulary</span>
+                <select name="vocabulary_select">
+
+                </select></div>
             <div id="search_result">
+                <span class="subtitle">Classes</span>
+                <div id="search_result_classes" class="search_result_m">
+                </div>
+                <span class="subtitle">Properties</span>
+                <div id="search_result_properties" class="search_result_m">
+                </div>
             </div>
         </div>
-
     </body>
 </html>
