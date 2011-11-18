@@ -11,25 +11,42 @@ function init_vocabulary_lookup(){
         opt.text(value.name);
     });
     
-    $("#vocabulary_lookup select").change(function(item){
-        $("#search_result_classes").empty();
-        $("#search_result_properties").empty();
+    $("#vocabulary_lookup select").change(loadVocabulary);
+    
+    loadVocabulary();
+}
+
+function loadVocabulary(){
+    $("#search_result_classes").empty();
+    $("#search_result_properties").empty();
+    
+    var prefix = $("select[@name=vocabulary_select] option:selected").val();
+    var selected_item = vocabularies[prefix];    
         
-        $.each(vocabularies[$(this).val()].classes,function(index, value){
-            var div = $("<div />");
-            div.addClass("search_result_class");
-            div.draggable({ revert: true, stack: ".search_result_classes", scope: 'mapping' });
-            div.text(value);
-        
-            $("#search_result_classes").append(div);
+    $.each(selected_item.classes,function(index, value){
+        var div = $("<div />");
+        div.addClass("search_result_class");
+        div.draggable({
+            revert: true, 
+            stack: ".search_result_classes"
         });
-        $.each(vocabularies[$(this).val()].properties,function(index, value){
-            var div = $("<div />");
-            div.addClass("search_result_property");
-            div.draggable({ revert: true, stack: ".search_result_property", scope: 'mapping' });
-            div.text(value);
-            $("#search_result_properties").append(div);
+        div.text(value);
+        div.data("prefix", prefix);
+        div.data("namespace",selected_item.namespace);
+        $("#search_result_classes").append(div);
+    });
+    $.each(selected_item.properties,function(index, value){
+        var div = $("<div />");
+        div.addClass("search_result_property");
+        div.draggable({
+            revert: true, 
+            stack: ".search_result_property", 
+            scope: 'mapping'
         });
+        div.text(value);
+        div.data("prefix", prefix);
+        div.data("namespace",selected_item.namespace);
+        $("#search_result_properties").append(div);
     });
 }
 

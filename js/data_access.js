@@ -11,6 +11,8 @@ var api_psw = "tdtusr";
 var tdt_resource = null;
 var tdt_package = null;
 
+var current_ontology = null;
+
 var last_arr = new Array();
 
 $(document).ready(function() {
@@ -37,8 +39,6 @@ function searchButtonHandler(event){
 }
 
 function successHandler(data){
-    
-       
     $.each(data.Resources, 
         function(i,item){
             var package_item = $("<li/>");
@@ -115,20 +115,21 @@ function createClicked(){
 }
 
 function ontologyLoaded(data){
-    var db = $.rdf().load(data, {});
-    db.base(data.documentElement.baseURI);
+    current_ontology = $.rdf().load(data, {});
+    current_ontology.base(data.documentElement.baseURI);
     
+   
     var path_arr = new Array();
     
     var cnt = 0;
     
-    var result = db
+    var result = current_ontology
     .prefix('owl','http://www.w3.org/2002/07/owl#')
     .prefix('rdf','http://www.w3.org/1999/02/22-rdf-syntax-ns#')
     .where('?dataclass a owl:Class')
     .each(function () {
         var path = this.dataclass.value.toString();
-        path = path.substring(db.base().length);
+        path = path.substring(current_ontology.base().length);
         path_arr[cnt] = path;
         cnt++;
     })
@@ -136,9 +137,17 @@ function ontologyLoaded(data){
     .where('?dataproperty a rdf:Property')
     .each(function () {
         var path = this.dataproperty.value.toString();
-        path = path.substring(db.base().length);
+        path = path.substring(current_ontology.base().length);
         path_arr[cnt] = path;
         cnt++;
+    })
+    
+    
+    //Sort array on path length
+    path_arr.sort(function(a, b) {
+        var compA = a.split("/").length;
+        var compB = b.split("/").length;
+        return (compA < compB) ? -1 : (compA > compB) ? 1 : 0;
     })
     
     $('#ontology').empty();
@@ -168,12 +177,14 @@ function processDataModel(path_arr){
             // that has the right name, create one:
             if (lastNode == currentNode) {
                 var newNode = currentNode[k] = {
-                    name: wantedNode, 
+                    name: wantedNode,
+                    path: path_arr[i],
                     nodes: []
                 };
                 currentNode = newNode.nodes;
             }
         }
+        
     }
     
     $('#ontology').append(parseNodes(output,"0"));
@@ -195,16 +206,88 @@ function parseNodes(nodes,uid) { // takes a nodes array and turns it into a <ol>
 
 function parseNode(node,uid) { // takes a node object and turns it into a <li>
     var li = $('<li/>');
-    var lbl = $("<span class='data_member' />");
+    var lbl = $("<div/>");
+    lbl.addClass('data_member');
+    lbl.data("path",node.path);
     lbl.text(node.name);
-    lbl.droppable({ hoverClass: 'member_hover', scope: 'mapping'});
+    lbl.droppable({
+        hoverClass: 'member_hover', 
+        accept:'*', 
+        drop:function(event, ui)
+        {
+            addMappingToOntology(node.path,ui.draggable);
+        }
+    }    
+    );
     li.append(lbl);
+    li.append(getMappingFromMember(node.path));
+    
     if(node.nodes) li.append(parseNodes(node.nodes,uid));
     return li;
 }
 
-function getNewButton(uid){
+function getMappingFromMember(path){
     
+    var mappings = $("<div/>");
+    
+    
+    //START HERE
+    ///////////////////////////////////////////////
+    ///////////////////////////////////////////////////
+    var index = this.map_property.toString().search("/\*\S*");
+    var test = this.map_property.toString().substring(index)
+    /////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////
+    
+    current_ontology
+    //.where('<'+current_ontology.base()+path+'> owl:equivalentClass ?map_class')
+    .where('<'+current_ontology.base()+path+'> owl:equivalentProperty ?map_property')
+    .each(function () {
+
+        var prefix = '';
+        var map = this.map_property.value.fragment;
+        var namespace = this.map_property.toString().substring(1,this.map_property.toString().length-map.length-1);
+        
+        mappings.append("<div class='mapping'>"+namespace+map+"</div>");
+    })
+    .end()
+    .where('<'+current_ontology.base()+path+'> owl:equivalentClass ?map_class')
+    .each(function () {
+
+        var prefix = '';
+        var map = this.map_class.value.fragment;
+        var namespace = this.map_class.toString().substring(1,this.map_class.toString().length-map.length-1);
+        
+        mappings.append("<div class='mapping'>"+namespace+map+"</div>");
+    })
+    .end()
+    
+    return mappings;
+}
+
+
+function addMappingToOntology(path,map){
+    var url = host+"TDTInfo/Ontology/"+tdt_package+"/"+path;
+    alert(url);
+    $.ajax({
+        url:url,
+        data:{
+            update_type : 'ontology',
+            method : 'map',
+            value : map.text(),
+            namespace : map.data('namespace'),
+            prefix : map.data('prefix')
+        },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader ("Authorization", "Basic " + $.base64.encode(api_usr + ":" + api_psw));
+        },
+        success:memberPutSuccess,
+        error:memberPutError,
+        type:"POST"
+    });
+}
+
+function getNewButton(uid){
     var a = $("<a/>");
     a.addClass("new_member_button");
     a.text("Add new member...");
@@ -246,7 +329,7 @@ function getNewButton(uid){
     
     new_member.append(txt);
     $("<label for='new_member_class"+uid+"'/>").text("Class: ").appendTo(new_member);
-    $("<input type='radio' name='new_member_type"+uid+"' id='new_member_class"+uid+"' value='class'/>").appendTo(new_member).checked;
+    $("<input type='radio' name='new_member_type"+uid+"' id='new_member_class"+uid+"' value='class' checked/>").appendTo(new_member);
     $("<label for='new_member_property"+uid+"'/>").text("Property: ").appendTo(new_member);
     $("<input type='radio' name='new_member_type"+uid+"' id='new_member_property"+uid+"' value='property'/>").appendTo(new_member);
     
