@@ -1,4 +1,4 @@
-/* 
+/*
     Document   : semantifier_style
     Created on : Oct 26, 2011, 11:12:07 AM
     Author     : mvdrsand
@@ -7,49 +7,78 @@
 */
 
 
-root { 
+body {
     display: block;
+    font-family: Verdana,Arial,Helvetica,sans-serif;
+}
+
+.pane {
+    border-width: 1px;
+    padding: 5px 5px 5px 5px;
+    border-style: solid;
+    border-color: #AAAAAA;
+    margin: 10px 10px 10px 10px;
+    background-color: #FFFFFF
 }
 
 #left_pane {
-    margin: 10px 10px 10px 10px;
-    width: 35%;
-    position: absolute;
     top: 0px;
+    width: 30%;
+    position: absolute;
     left:0px;
 }
 
 #center_pane {
-    margin: 10px 10px 10px 10px;
-    width: 45%;
-    position: absolute;
+    width: 43%;
+    position: relative;
     top: 0px;
-    left: 30%;
-
+    left: 32%;
+}
+#bottom_pane {
+    width: 43%;
+    position: absolute;
+    bottom: 0px;
+    left: 32%;
 }
 
 #right_pane {
-    margin: 10px 10px 10px 10px;
     width: 20%;
     position: absolute;
     top: 0px;
     right:0px;
 }
 
-
-.box {
-    border-color: #AAAAAA;
-    border-style: solid;
-    border-width: 1px;
-    padding: 5px 5px 5px 5px;
-    margin: 15px 15px 15px 15px;
+.sidenote{
+    font-size: 10px;
+    font-style: italic;
 }
 
-.box span {
-    font-family: Verdana,Arial,Helvetica,sans-serif;
-    font-size: 18px;
-    color: #0099cc;
-    font-weight: lighter;
+.package_label {
+    font-size: 14px;
+    padding-left: 30px;
+    padding-bottom: 6px;
+    background: url(lib/images/blue/database.png) no-repeat 0 -5px;
+}
+
+.resource_label {
+    display: block;
+    cursor: pointer;
+    font-size: 14px;
+    border-width: 0px;
+    border-bottom-width: 1px;
+    border-style: solid;
+    border-color: #AAAAAA;
+    padding-left: 30px;
+    padding-bottom: 6px;
+    background: url(lib/images/blue/connections.png) no-repeat 0 -5px;
+    
+}
+.resource_label:hover{
+    color:#CCCCCC;
+}
+.preview_buttons {
+    font-size:11px;
+    margin-bottom: 5px;
 }
 
 #ontology .data_member {
@@ -62,9 +91,9 @@ root {
     color:white;
     margin-bottom: 5px;
     font-size: 12px;
-    font-family: Verdana,Arial,Helvetica,sans-serif;
 }
-#ontology .data_member span :hover {
+
+#ontology .data_member:hover {
     padding: 5px 5px 5px 5px;
     background-color: white;
     border-width: 1px;
@@ -74,17 +103,29 @@ root {
     color:gray;
     margin-bottom: 5px;
     font-size: 12px;
-    font-family: Verdana,Arial,Helvetica,sans-serif;
+    cursor: pointer
+}
+
+#ontology .new_member {
+    border-width: 1px;
+    padding: 5px 5px 5px 5px;
+    border-style: solid;
+    border-color: #AAAAAA;
+    background-color: #CCCCCC;
+    font-size: 11px;
+    vertical-align: middle
+}
+
+#ontology .new_member input{
+    margin-right: 10px;
 }
 
 #ontology .new_member_button {
     font-weight: bold;
     margin-bottom: 5px;
     font-size: 11px;
-    font-family: Verdana,Arial,Helvetica,sans-serif;
+
 }
-
-
 
 #vocabulary_lookup {
     border-width: 1px;
@@ -102,9 +143,9 @@ root {
 }
 
 #search_result{
-   font-family: Verdana,Arial,Helvetica,sans-serif;
-   /*height: 600px;
-   overflow: auto;*/
+
+    /*height: 600px;
+    overflow: auto;*/
 }
 
 #search_result .subtitle{
@@ -139,7 +180,7 @@ root {
     font-weight: bold;
     color:white;
     margin-bottom: 5px;
-    
+
 }
 
 .ui-draggable {
@@ -151,11 +192,50 @@ root {
 }
 
 #ontology .mapping {
-    font-family: Verdana,Arial,Helvetica,sans-serif;
     margin-left: 20px;
+    margin-bottom: 5px;
     border-width: 1px;
     padding: 5px 5px 5px 5px;
     border-style: solid;
     border-color: #AAAAAA;
-    font-size: 10px;   
+    font-size: 10px;
+}
+
+.box {
+    border-color: #AAAAAA;
+    border-style: solid;
+    border-width: 1px;
+    padding: 5px 5px 5px 5px;
+}
+
+.title {
+
+    font-size: 18px;
+    color: #74b2e2;
+    display: block;
+    margin-bottom: 10px;
+
+}
+
+#no_ontology .create_ontology {
+    padding: 5px 5px 5px 5px;
+    background-color: #AAAAAA;
+    border-width: 1px;
+    border-style: solid;
+    border-color: white;
+    color:white;
+    margin-bottom: 5px;
+    font-size: 14px;
+
+    cursor: pointer
+}
+
+#no_ontology .create_ontology:hover {
+    background-color: #74b2e2;
+}
+
+#no_ontology .create_ontology_nr {
+    margin-right: 5px;
+    font-size: 18px;
+    color: #FFFFFF
 }

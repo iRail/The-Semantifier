@@ -22,25 +22,38 @@ and open the template in the editor.
 
     </head>
     <body>
-        <div id="left_pane" class="ui-layout-west" title="Resources">
+        <div id="left_pane" class="ui-layout-west pane" title="Resources">
             <ul id="list" class="filetree">
 
             </ul>
 
         </div>
-        <div id="center_pane" class="ui-layout-center" title="Ontology">
+        <div id="center_pane" class="ui-layout-center pane" title="Ontology">
 
             <div id="no_ontology" class="box">
                 <span class="title"></span>
-                <div class="content">Would you like to <a href='javascript:createClicked()'>create</a> one?</div>
+                <div class="create_ontology" onclick="javascript:createEmptyClicked()"><span class="create_ontology_nr">1.</span>Create an empty ontology</div>
+                <div class="create_ontology" onclick="javascript:createFileClicked()">
+                    <span class="create_ontology_nr">2.</span>Create an ontology from file
+                    <div id="create_ontology_file">
+                        <input id="create_ontology_file_text" type="text" name="create_ontology_file_text" value="" />
+                        <input id="create_ontology_file_send" type="button" value="Send" name="create_ontology_file_send" />
+                        <br/>
+                        <span class="sidenote">File should describe an ontology in valid N3 or Turtle syntax!</span>
+                    </div>
+                </div>
+                <div class="create_ontology" onclick="javascript:createAutoClicked()"><span class="create_ontology_nr">3.</span>Auto-generate an ontology</div>
             </div>
             <div id="ontology">
 
             </div>
 
-
         </div>
-        <div id="right_pane" class="ui-layout-east" title="Ontology">
+        <div id="bottom_pane" class="pane">
+
+
+        </div>  
+        <div id="right_pane" class="ui-layout-east pane" title="Ontology">
             <!--<div><input type="text" name="search_field" value="" /></div>
             <div>
                 <input type="button" value="Search" name="search_button" />

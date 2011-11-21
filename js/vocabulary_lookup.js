@@ -40,8 +40,7 @@ function loadVocabulary(){
         div.addClass("search_result_property");
         div.draggable({
             revert: true, 
-            stack: ".search_result_property", 
-            scope: 'mapping'
+            stack: ".search_result_property"
         });
         div.text(value);
         div.data("prefix", prefix);

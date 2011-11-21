@@ -26,6 +26,7 @@ $(document).ready(function() {
     });*/
 
     $("#search_button").click(searchButtonHandler);
+    $("#create_ontology_file").hide();
     
     init_vocabulary_lookup();
 
@@ -42,9 +43,8 @@ function successHandler(data){
     $.each(data.Resources, 
         function(i,item){
             var package_item = $("<li/>");
-            var package_span = $("<span/>");
+            var package_span = $("<span class='package_label'/>");
             package_span.text(i);
-            package_span.addClass("folder");
             
             package_span.appendTo(package_item);
             package_item.appendTo("#list");
@@ -56,12 +56,18 @@ function successHandler(data){
                 function(resource,doc){
                     if (resource != "creation_date"){
                         var resource_item = $("<li/>");
-                        var resource_item_span = $("<span/>");
-                        resource_item_span.addClass("file");
+                        var resource_item_span = $("<span class='resource_label'/>");
                         resource_item_span.text(resource);
                         resource_item_span.appendTo(resource_item);
-                        resource_item.click(resourceClicked);
+                        resource_item_span.click(resourceClicked);
                         resource_item.appendTo(resource_list);
+                        
+                        var resource_preview = $("<div class='preview_buttons'/>").appendTo(resource_item);
+                        resource_preview.append($("<span class='label'>Preview data in </span>"));
+                        resource_preview.append($("<a/>").click(preview("xml")).text("XML"));
+                        resource_preview.append($("<a/>").click(preview("json")).text("JSON"));
+                        resource_preview.append($("<a/>").click(preview("rdf")).text("RDF/XML"));
+                        resource_preview.append($("<a/>").click(preview("n3")).text("RDF/N3"));
                     }
                 }
                 );
@@ -74,15 +80,12 @@ function successHandler(data){
         animated: "fast",
         collapsed: true
     });
-    
-    
 }
 
 
 function resourceClicked(event){
-    $("#no_ontology").hide();
     tdt_resource = $(this).text();
-    tdt_package = $(this).parents("li").children(".folder").text();
+    tdt_package = $(this).parents("li").children(".package_label").text();
     
     loadOntology();
 }
@@ -104,17 +107,46 @@ function ontologyNonExisting(){
     $("#no_ontology").show();
 }
 
-function createClicked(){
-    var url = host+"TDTInfo/Ontology/"+tdt_package+"/"+tdt_resource;
-    $.post(url, {
-        
-        
-        }, function(){
-        
-        });
+function createEmptyClicked(){
+    createOntology({});
 }
 
+function createFileClicked(){
+    $("#create_ontology_file").show("slow");
+}
+
+function createFileSendClicked(){
+    createOntology({
+        file:$("#create_ontology_file_text").text()
+    });
+}
+
+function createAutoClicked(){
+    createOntology({});
+}
+
+function createOntology(data){
+    var url = host+"TDTInfo/Ontology/"+tdt_package+"/"+tdt_resource;
+    $.ajax({
+        url:url,
+        data:data,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader ("Authorization", "Basic " + $.base64.encode(api_usr + ":" + api_psw));
+        },
+        success:loadOntology,
+        error:memberPutError,
+        type:"PUT"
+    });
+}
+
+
 function ontologyLoaded(data){
+    $("#create_ontology_file").hide();
+    $("#no_ontology").hide();
+    $('#ontology').empty();
+    
+    $('#ontology').append($("#no_ontology .title").text("Ontology of "+tdt_package+"/"+tdt_resource));
+    
     current_ontology = $.rdf().load(data, {});
     current_ontology.base(data.documentElement.baseURI);
     
@@ -150,7 +182,7 @@ function ontologyLoaded(data){
         return (compA < compB) ? -1 : (compA > compB) ? 1 : 0;
     })
     
-    $('#ontology').empty();
+    
     
     if (path_arr.length == 0)
         ontologyNonExisting();
@@ -200,7 +232,7 @@ function parseNodes(nodes,uid) { // takes a nodes array and turns it into a <ol>
         ul.append(parseNode(nodes[i],uid+1));
     }
     if (uid != "0")
-        ul.append(getNewButton(uid));
+        ul.prepend(getNewButton(uid));
     return ul;
 }
 
@@ -212,7 +244,7 @@ function parseNode(node,uid) { // takes a node object and turns it into a <li>
     lbl.text(node.name);
     lbl.droppable({
         hoverClass: 'member_hover', 
-        accept:'*', 
+        accept: '*',
         drop:function(event, ui)
         {
             addMappingToOntology(node.path,ui.draggable);
@@ -227,48 +259,58 @@ function parseNode(node,uid) { // takes a node object and turns it into a <li>
 }
 
 function getMappingFromMember(path){
-    
     var mappings = $("<div/>");
     
-    
-    //START HERE
-    ///////////////////////////////////////////////
-    ///////////////////////////////////////////////////
-    var index = this.map_property.toString().search("/\*\S*");
-    var test = this.map_property.toString().substring(index)
-    /////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////
-    
     current_ontology
-    //.where('<'+current_ontology.base()+path+'> owl:equivalentClass ?map_class')
     .where('<'+current_ontology.base()+path+'> owl:equivalentProperty ?map_property')
     .each(function () {
+        var resource_uri = this.map_property.dump().value;
+        
+        var index = resource_uri.lastIndexOf("#");
+        if (index == -1)
+            index = resource_uri.lastIndexOf("/");
+        
+        var namespace = resource_uri.substring(0,index);
+        var map = resource_uri.substring(index);
 
         var prefix = '';
-        var map = this.map_property.value.fragment;
-        var namespace = this.map_property.toString().substring(1,this.map_property.toString().length-map.length-1);
         
-        mappings.append("<div class='mapping'>"+namespace+map+"</div>");
+        if (prefix != ''){
+            mappings.append("<div class='mapping'><a href='"+namespace+map+"'>"+prefix+':'+map+"</a></div>");
+        } else {
+            mappings.append("<div class='mapping'><a href='"+namespace+map+"'>"+namespace+map+"</a></div>");
+        }
     })
     .end()
     .where('<'+current_ontology.base()+path+'> owl:equivalentClass ?map_class')
     .each(function () {
+        var resource_uri = this.map_class.dump().value;
+        
+        var index = resource_uri.lastIndexOf("#");
+        if (index == -1)
+            index = resource_uri.lastIndexOf("/");
+        
+        var namespace = resource_uri.substring(0,index);
+        var map = resource_uri.substring(index);
 
         var prefix = '';
-        var map = this.map_class.value.fragment;
-        var namespace = this.map_class.toString().substring(1,this.map_class.toString().length-map.length-1);
         
-        mappings.append("<div class='mapping'>"+namespace+map+"</div>");
+        if (prefix != ''){
+            mappings.append("<div class='mapping'><a href='"+namespace+map+"'>"+prefix+':'+map+"</a></div>");
+        } else {
+            mappings.append("<div class='mapping'><a href='"+namespace+map+"'>"+namespace+map+"</a></div>");
+        }
     })
     .end()
+    
+    
     
     return mappings;
 }
 
-
 function addMappingToOntology(path,map){
     var url = host+"TDTInfo/Ontology/"+tdt_package+"/"+path;
-    alert(url);
+
     $.ajax({
         url:url,
         data:{
@@ -281,7 +323,7 @@ function addMappingToOntology(path,map){
         beforeSend: function (xhr) {
             xhr.setRequestHeader ("Authorization", "Basic " + $.base64.encode(api_usr + ":" + api_psw));
         },
-        success:memberPutSuccess,
+        success:loadOntology,
         error:memberPutError,
         type:"POST"
     });
@@ -310,11 +352,12 @@ function getNewButton(uid){
             var p = txt.parents("li");
             var path = "";
             p.each(function(){
-                var span = $(this).children("span");
+                var span = $(this).children("div .data_member");
                 if (span.length>0)
                     path = span.text()+"/"+path;
             });
-            addToOntology(path+txt.val(),$("input[@name='new_member_type"+uid+"']:checked").val());
+            alert(path);
+            addMemberToOntology(path+txt.val(),$("input[@name='new_member_type"+uid+"']:checked").val());
         }
     });
     
@@ -326,8 +369,8 @@ function getNewButton(uid){
         }     
     });
 
-    
-    new_member.append(txt);
+    $("<label for='new_member_text"+uid+"'/>").text("Member name: ").appendTo(new_member);
+    txt.appendTo(new_member);
     $("<label for='new_member_class"+uid+"'/>").text("Class: ").appendTo(new_member);
     $("<input type='radio' name='new_member_type"+uid+"' id='new_member_class"+uid+"' value='class' checked/>").appendTo(new_member);
     $("<label for='new_member_property"+uid+"'/>").text("Property: ").appendTo(new_member);
@@ -338,9 +381,9 @@ function getNewButton(uid){
     return li;
 }
 
-function addToOntology(member_path,member_type){
+function addMemberToOntology(member_path,member_type){
     var url = host+"TDTInfo/Ontology/"+tdt_package+"/"+member_path;
-    alert(member_type);       
+
     $.ajax({
         url:url,
         data:{
@@ -349,16 +392,25 @@ function addToOntology(member_path,member_type){
         beforeSend: function (xhr) {
             xhr.setRequestHeader ("Authorization", "Basic " + $.base64.encode(api_usr + ":" + api_psw));
         },
-        success:memberPutSuccess,
+        success:loadOntology,
         error:memberPutError,
         type:"PUT"
     });
     
 }
 
-function memberPutSuccess(){
-    loadOntology();
-}
 function memberPutError(data){
     alert("Something is wrong! "+data);
+}
+
+function preview(format){
+    tdt_resource = $(this).parents("li");
+    tdt_package = $(this).parents("li");
+    
+    //var url = host+tdt_package+"/"+tdt_resource+"."+format;
+    /*$.get(url, {}, function(data){
+        alert(data);
+        $("#bottom_pane").append(data);
+        
+    });    */
 }
