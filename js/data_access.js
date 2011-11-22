@@ -11,6 +11,7 @@ var api_psw = "tdtusr";
 var tdt_resource = null;
 var tdt_package = null;
 
+var current_namespaces = new Array();
 var current_ontology = null;
 
 var last_arr = new Array();
@@ -18,21 +19,20 @@ var last_arr = new Array();
 $(document).ready(function() {
    
     $("#no_ontology").hide();
-    
     $("#new_member").hide();
-
+    $("#create_ontology_file").hide();
+    
+    $(".loading").hide();
+    
     /*$("body").layout({
         applyDefaultStyles: true
     });*/
 
     $("#search_button").click(searchButtonHandler);
-    $("#create_ontology_file").hide();
-    
+        
     init_vocabulary_lookup();
 
     $.getJSON(host+"TDTInfo/Resources.json",null,successHandler);
-    
-    
 });
 
 function searchButtonHandler(event){
@@ -64,18 +64,39 @@ function successHandler(data){
                         
                         var resource_preview = $("<div class='preview_buttons'/>").appendTo(resource_item);
                         resource_preview.append($("<span class='label'>Preview data in </span>"));
-                        resource_preview.append($("<a/>").click(preview("xml")).text("XML"));
-                        resource_preview.append($("<a/>").click(preview("json")).text("JSON"));
-                        resource_preview.append($("<a/>").click(preview("rdf")).text("RDF/XML"));
-                        resource_preview.append($("<a/>").click(preview("n3")).text("RDF/N3"));
+                        
+                        var a = null;
+                        
+                        a = $("<a/>").appendTo(resource_preview);
+                        a.click(preview);
+                        a.data("ext",".xml");
+                        a.text("XML");
+                        
+                        resource_preview.append(" | ");
+                        
+                        a = $("<a/>").appendTo(resource_preview);
+                        a.click(preview);
+                        a.data("ext",".json");
+                        a.text("JSON");
+                        
+                        resource_preview.append(" | ");
+                        
+                        a = $("<a/>").appendTo(resource_preview);
+                        a.click(preview);
+                        a.data("ext",".rdf");
+                        a.text("RDF/XML");
+                        
+                        resource_preview.append(" | ");
+                        
+                        a = $("<a/>").appendTo(resource_preview);
+                        a.click(preview);
+                        a.data("ext",".n3");
+                        a.text("RDF/N3");
                     }
                 }
                 );
-            
-            
         }
         );
-        
     $("#list").treeview({
         animated: "fast",
         collapsed: true
@@ -91,6 +112,8 @@ function resourceClicked(event){
 }
 
 function loadOntology(){
+    $("#center_pane .loading").show();
+    
     var url = host+"TDTInfo/Ontology/"+tdt_package+"/"+tdt_resource+".rdf";
     $.ajax({
         url:url,
@@ -103,7 +126,8 @@ function loadOntology(){
 }
 
 function ontologyNonExisting(){
-    $("#no_ontology .title").text("The resource "+tdt_package+"/"+tdt_resource+" has no ontology");
+    $("#center_pane .loading").hide();
+    $("#center_pane .title").text("The resource "+tdt_package+"/"+tdt_resource+" has no ontology");
     $("#no_ontology").show();
 }
 
@@ -145,14 +169,16 @@ function ontologyLoaded(data){
     $("#no_ontology").hide();
     $('#ontology').empty();
     
-    $('#ontology').append($("#no_ontology .title").text("Ontology of "+tdt_package+"/"+tdt_resource));
+    $("#center_pane .title").text("Ontology of "+tdt_package+"/"+tdt_resource);
     
     current_ontology = $.rdf().load(data, {});
     current_ontology.base(data.documentElement.baseURI);
     
-   
+    $.each($(data.documentElement).xmlns(),function(prefix,item){
+        current_namespaces[item.toString()] = prefix;        
+    });
+       
     var path_arr = new Array();
-    
     var cnt = 0;
     
     var result = current_ontology
@@ -173,17 +199,14 @@ function ontologyLoaded(data){
         path_arr[cnt] = path;
         cnt++;
     })
-    
-    
+        
     //Sort array on path length
     path_arr.sort(function(a, b) {
         var compA = a.split("/").length;
         var compB = b.split("/").length;
         return (compA < compB) ? -1 : (compA > compB) ? 1 : 0;
     })
-    
-    
-    
+        
     if (path_arr.length == 0)
         ontologyNonExisting();
     else
@@ -219,6 +242,7 @@ function processDataModel(path_arr){
         
     }
     
+    $("#center_pane .loading").hide();
     $('#ontology').append(parseNodes(output,"0"));
     $('#ontology').treeview({
         animated: "fast",
@@ -270,15 +294,15 @@ function getMappingFromMember(path){
         if (index == -1)
             index = resource_uri.lastIndexOf("/");
         
-        var namespace = resource_uri.substring(0,index);
-        var map = resource_uri.substring(index);
+        var namespace = resource_uri.substring(0,index+1);
+        var map = resource_uri.substring(index+1);
 
-        var prefix = '';
+        var prefix = current_namespaces[namespace];
         
-        if (prefix != ''){
-            mappings.append("<div class='mapping'><a href='"+namespace+map+"'>"+prefix+':'+map+"</a></div>");
+        if (prefix != undefined){
+            mappings.append("<span class='mapping'><a href='"+namespace+map+"'>"+prefix+':'+map+"</a></span>");
         } else {
-            mappings.append("<div class='mapping'><a href='"+namespace+map+"'>"+namespace+map+"</a></div>");
+            mappings.append("<span class='mapping'><a href='"+namespace+map+"'>"+namespace+map+"</a></span>");
         }
     })
     .end()
@@ -290,15 +314,21 @@ function getMappingFromMember(path){
         if (index == -1)
             index = resource_uri.lastIndexOf("/");
         
-        var namespace = resource_uri.substring(0,index);
-        var map = resource_uri.substring(index);
+        var namespace = resource_uri.substring(0,index+1);
+        var map = resource_uri.substring(index+1);
 
-        var prefix = '';
         
-        if (prefix != ''){
-            mappings.append("<div class='mapping'><a href='"+namespace+map+"'>"+prefix+':'+map+"</a></div>");
+        var prefix = current_namespaces[namespace];
+        var map_span = $("<span class='mapping'/>").appendTo(mappings);
+        var map_a = $("<a href='"+namespace+map+"'/>").appendTo(map_span);
+        map_a.mouseover(function(){
+            $("#data_preview").highlight($(this).text());
+        });
+        
+        if (prefix != undefined){
+            map_a.text(prefix+':'+map);
         } else {
-            mappings.append("<div class='mapping'><a href='"+namespace+map+"'>"+namespace+map+"</a></div>");
+            mappings.append(namespace+map);
         }
     })
     .end()
@@ -307,6 +337,7 @@ function getMappingFromMember(path){
     
     return mappings;
 }
+
 
 function addMappingToOntology(path,map){
     var url = host+"TDTInfo/Ontology/"+tdt_package+"/"+path;
@@ -356,7 +387,6 @@ function getNewButton(uid){
                 if (span.length>0)
                     path = span.text()+"/"+path;
             });
-            alert(path);
             addMemberToOntology(path+txt.val(),$("input[@name='new_member_type"+uid+"']:checked").val());
         }
     });
@@ -403,14 +433,15 @@ function memberPutError(data){
     alert("Something is wrong! "+data);
 }
 
-function preview(format){
-    tdt_resource = $(this).parents("li");
-    tdt_package = $(this).parents("li");
+function preview(){
+    tdt_resource = $(this).parents("li").children(".resource_label").text();
+    tdt_package = $(this).parents("li").children(".package_label").text();
     
-    //var url = host+tdt_package+"/"+tdt_resource+"."+format;
-    /*$.get(url, {}, function(data){
-        alert(data);
-        $("#bottom_pane").append(data);
-        
-    });    */
+    $("#data_preview .loading").show();
+    
+    var url = host+tdt_package+"/"+tdt_resource+$(this).data("ext");
+    $.get(url, {}, function(data){
+        $("#data_preview_title").text("Data preview of "+tdt_package+"/"+tdt_resource);
+        $("#data_preview").html(data.toString());
+    });    
 }

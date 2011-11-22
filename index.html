@@ -19,19 +19,19 @@ and open the template in the editor.
         <script src="js/vocabulary_lookup.js" ></script>
         <script src="js/vocabularies.js"></script>
         <script src="lib/base64/jquery.base64.js"></script>
-
+        <script src="lib/jquery-highlight/jquery.highlight-3.js"></script>
     </head>
     <body>
         <div id="left_pane" class="ui-layout-west pane" title="Resources">
+            <div class="loading"></div>
             <ul id="list" class="filetree">
-
+                
             </ul>
-
         </div>
         <div id="center_pane" class="ui-layout-center pane" title="Ontology">
-
-            <div id="no_ontology" class="box">
-                <span class="title"></span>
+            <span class="title"></span>
+            <div class="loading"></div>
+            <div id="no_ontology">
                 <div class="create_ontology" onclick="javascript:createEmptyClicked()"><span class="create_ontology_nr">1.</span>Create an empty ontology</div>
                 <div class="create_ontology" onclick="javascript:createFileClicked()">
                     <span class="create_ontology_nr">2.</span>Create an ontology from file
@@ -45,13 +45,17 @@ and open the template in the editor.
                 <div class="create_ontology" onclick="javascript:createAutoClicked()"><span class="create_ontology_nr">3.</span>Auto-generate an ontology</div>
             </div>
             <div id="ontology">
-
+                
             </div>
 
         </div>
         <div id="bottom_pane" class="pane">
-
-
+            <div id="data_preview_title" class="title">Data preview</div>
+            <div id="data_preview">
+                <div class="loading"></div>
+                
+            </div>
+            
         </div>  
         <div id="right_pane" class="ui-layout-east pane" title="Ontology">
             <!--<div><input type="text" name="search_field" value="" /></div>

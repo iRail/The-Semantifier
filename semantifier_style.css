@@ -4,6 +4,7 @@
     Author     : mvdrsand
     Description:
         Purpose of the stylesheet follows.
+        Blue #00B5FB
 */
 
 
@@ -26,6 +27,7 @@ body {
     width: 30%;
     position: absolute;
     left:0px;
+    overflow: auto;
 }
 
 #center_pane {
@@ -35,10 +37,12 @@ body {
     left: 32%;
 }
 #bottom_pane {
-    width: 43%;
+    width: 30%;
     position: absolute;
     bottom: 0px;
-    left: 32%;
+    left:0px;
+    
+    height: 50%;
 }
 
 #right_pane {
@@ -81,6 +85,13 @@ body {
     margin-bottom: 5px;
 }
 
+#data_preview {
+    overflow: auto;
+    height: 100%;
+    font-family: serif;
+    font-size: 10px;
+}
+
 #ontology .data_member {
     padding: 5px 5px 5px 5px;
     background-color: gray;
@@ -104,6 +115,10 @@ body {
     margin-bottom: 5px;
     font-size: 12px;
     cursor: pointer
+}
+
+.member_hover {
+    background-color: white;
 }
 
 #ontology .new_member {
@@ -191,8 +206,10 @@ body {
     box-shadow: 5px 5px 5px #888;
 }
 
+.highlight { background-color: yellow }
+
 #ontology .mapping {
-    margin-left: 20px;
+    margin-left: 5px;
     margin-bottom: 5px;
     border-width: 1px;
     padding: 5px 5px 5px 5px;
@@ -211,7 +228,7 @@ body {
 .title {
 
     font-size: 18px;
-    color: #74b2e2;
+    color: #00B5FB;
     display: block;
     margin-bottom: 10px;
 
@@ -238,4 +255,18 @@ body {
     margin-right: 5px;
     font-size: 18px;
     color: #FFFFFF
+}
+
+.loading {
+    background: url(lib/images/ajax-loader.gif) no-repeat;
+    background-position: center;
+    width: 100%;
+    height: 80%;
+    
+    font-size: 14px;
+    color: #CCCCCC;
+    text-align: center;
+    
+    vertical-align: middle;
+    font-family: Verdana,Arial,Helvetica,sans-serif;
 }
