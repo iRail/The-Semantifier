@@ -13,6 +13,17 @@ body {
     font-family: Verdana,Arial,Helvetica,sans-serif;
 }
 
+header {
+    height: 60px;
+    background: url(images/TheSemantifier-lowres.png) no-repeat;
+    -moz-background-size:  auto 60px;
+    -o-background-size: auto 60px;
+    -webkit-background-size: auto 60px; 
+    background-size: auto 60px;
+}
+
+
+
 .pane {
     border-width: 1px;
     padding: 5px 5px 5px 5px;
@@ -20,6 +31,19 @@ body {
     border-color: #AAAAAA;
     margin: 10px 10px 10px 10px;
     background-color: #FFFFFF
+
+        -webkit-border-radius:5px;
+    -moz-border-radius:	5px;
+    -ms-border-radius:	5px;
+    -o-border-radius:	5px;
+    border-radius:	5px
+}
+
+#content {
+    top: 70px;
+    position: absolute;
+    left:0px;
+    width: 100%
 }
 
 #left_pane {
@@ -32,18 +56,11 @@ body {
 
 #center_pane {
     width: 43%;
-    position: relative;
+    position: absolute;
     top: 0px;
     left: 32%;
 }
-#bottom_pane {
-    width: 30%;
-    position: absolute;
-    bottom: 0px;
-    left:0px;
-    
-    height: 50%;
-}
+
 
 #right_pane {
     width: 20%;
@@ -61,7 +78,7 @@ body {
     font-size: 14px;
     padding-left: 30px;
     padding-bottom: 6px;
-    background: url(lib/images/blue/database.png) no-repeat 0 -5px;
+    background: url(images/blue/database.png) no-repeat 0 -5px;
 }
 
 .resource_label {
@@ -74,23 +91,17 @@ body {
     border-color: #AAAAAA;
     padding-left: 30px;
     padding-bottom: 6px;
-    background: url(lib/images/blue/connections.png) no-repeat 0 -5px;
-    
+    background: url(images/blue/connections.png) no-repeat 0 -5px;
+
 }
 .resource_label:hover{
     color:#CCCCCC;
 }
 .preview_buttons {
-    font-size:11px;
+    font-size:10px;
     margin-bottom: 5px;
 }
 
-#data_preview {
-    overflow: auto;
-    height: 100%;
-    font-family: serif;
-    font-size: 10px;
-}
 
 #ontology .data_member {
     padding: 5px 5px 5px 5px;
@@ -102,19 +113,6 @@ body {
     color:white;
     margin-bottom: 5px;
     font-size: 12px;
-}
-
-#ontology .data_member:hover {
-    padding: 5px 5px 5px 5px;
-    background-color: white;
-    border-width: 1px;
-    border-style: solid;
-    border-color: gray;
-    font-weight: bold;
-    color:gray;
-    margin-bottom: 5px;
-    font-size: 12px;
-    cursor: pointer
 }
 
 .member_hover {
@@ -206,7 +204,7 @@ body {
     box-shadow: 5px 5px 5px #888;
 }
 
-.highlight { background-color: yellow }
+.highlight { color: #FF0000 }
 
 #ontology .mapping {
     margin-left: 5px;
@@ -258,15 +256,20 @@ body {
 }
 
 .loading {
-    background: url(lib/images/ajax-loader.gif) no-repeat;
+    background: url(images/ajax-loader.gif) no-repeat;
     background-position: center;
     width: 100%;
     height: 80%;
-    
+
     font-size: 14px;
     color: #CCCCCC;
     text-align: center;
-    
+
     vertical-align: middle;
     font-family: Verdana,Arial,Helvetica,sans-serif;
+}
+
+.ui-dialog-content {
+    font-family:  serif;
+    font-size: 11px;
 }

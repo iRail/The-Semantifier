@@ -11,6 +11,7 @@ var api_psw = "tdtusr";
 var tdt_resource = null;
 var tdt_package = null;
 
+var current_preview_format = '.html';
 var current_namespaces = new Array();
 var current_ontology = null;
 
@@ -23,6 +24,14 @@ $(document).ready(function() {
     $("#create_ontology_file").hide();
     
     $(".loading").hide();
+    
+    $("#data_preview").dialog({
+        autoOpen:false,
+        dialogClass: 'data_preview_dialog',
+        position: ['left','bottom'],
+        resizable: true,
+        height: 300 
+    });
     
     /*$("body").layout({
         applyDefaultStyles: true
@@ -63,9 +72,16 @@ function successHandler(data){
                         resource_item.appendTo(resource_list);
                         
                         var resource_preview = $("<div class='preview_buttons'/>").appendTo(resource_item);
-                        resource_preview.append($("<span class='label'>Preview data in </span>"));
-                        
+                        resource_preview.append($("<span class='label'>Preview: </span>"));
+
                         var a = null;
+                        
+                        a = $("<a/>").appendTo(resource_preview);
+                        a.click(preview);
+                        a.data("ext",".html");
+                        a.text("Model");
+                        
+                        resource_preview.append(" | ");
                         
                         a = $("<a/>").appendTo(resource_preview);
                         a.click(preview);
@@ -123,6 +139,8 @@ function loadOntology(){
         },
         error:ontologyNonExisting
     });
+    
+    request_preview();
 }
 
 function ontologyNonExisting(){
@@ -141,7 +159,7 @@ function createFileClicked(){
 
 function createFileSendClicked(){
     createOntology({
-        file:$("#create_ontology_file_text").text()
+        ontology_file:$("#create_ontology_file_text").val()
     });
 }
 
@@ -321,8 +339,13 @@ function getMappingFromMember(path){
         var prefix = current_namespaces[namespace];
         var map_span = $("<span class='mapping'/>").appendTo(mappings);
         var map_a = $("<a href='"+namespace+map+"'/>").appendTo(map_span);
+        
         map_a.mouseover(function(){
             $("#data_preview").highlight($(this).text());
+        });
+        
+        map_a.mouseout(function(){
+            $("#data_preview").removeHighlight($(this).text());
         });
         
         if (prefix != undefined){
@@ -332,9 +355,7 @@ function getMappingFromMember(path){
         }
     })
     .end()
-    
-    
-    
+
     return mappings;
 }
 
@@ -437,11 +458,24 @@ function preview(){
     tdt_resource = $(this).parents("li").children(".resource_label").text();
     tdt_package = $(this).parents("li").children(".package_label").text();
     
+    current_preview_format = $(this).data("ext");
+    
+    request_preview();
+}
+
+function request_preview(){
+    $("#data_preview_content").hide();
+    $("#data_preview").dialog("open");
     $("#data_preview .loading").show();
     
-    var url = host+tdt_package+"/"+tdt_resource+$(this).data("ext");
+    var url = host+tdt_package+"/"+tdt_resource+current_preview_format;
     $.get(url, {}, function(data){
-        $("#data_preview_title").text("Data preview of "+tdt_package+"/"+tdt_resource);
-        $("#data_preview").html(data.toString());
-    });    
+        $("#data_preview .loading").hide();
+        $("#data_preview_content").show();
+        $("#data_preview").dialog("option", "title", "Preview of "+tdt_package+"/"+tdt_resource+" ("+current_preview_format+")");
+        if (current_preview_format == '.html')
+            $("#data_preview_content").html(data);
+        else
+            $("#data_preview_content").text(data);
+    },"text");
 }
