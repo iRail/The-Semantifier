@@ -1,0 +1,304 @@
+/*
+    Document   : semantifier.style
+    Created on : Oct 26, 2011, 11:12:07 AM
+    Author     : Miel Vander Sande <miel.vandersande@ugent.be>
+    Description:
+        Stylesheet describing The Semantifier style
+
+    Uses images/TheSemantifier-lowres.png
+    Copyright 2011, Miel Vander Sande <miel.vandersande@ugent.be>
+    Licensed under the AGPL 3.0 license <http://www.gnu.org/licenses/agpl.txt>.
+    
+    Uses gcons in images/blue
+    http://www.greepit.com
+    gcons is free for personal and commercial designs / applications but the icons may not be sold, sublicensed, rented or transferred.
+
+*/
+
+body {
+    display: block;
+    font-family: Verdana,Arial,Helvetica,sans-serif;
+}
+
+header {
+    height: 60px;
+    background: url(images/TheSemantifier-lowres.png) no-repeat;
+    -moz-background-size:  auto 60px;
+    -o-background-size: auto 60px;
+    -webkit-background-size: auto 60px; 
+    background-size: auto 60px;
+}
+
+.pane {
+    border-width: 1px;
+    padding: 5px 5px 5px 5px;
+    border-style: solid;
+    border-color: #AAAAAA;
+    margin: 10px 10px 10px 10px;
+    background-color: #FFFFFF;
+
+    -webkit-border-radius:5px;
+    -moz-border-radius:	5px;
+    -ms-border-radius:	5px;
+    -o-border-radius:	5px;
+    border-radius:	5px
+}
+
+#content {
+    top: 70px;
+    position: absolute;
+    left:0px;
+    width: 100%
+}
+
+#left_pane {
+    top: 0px;
+    width: 300px;
+    position: absolute;
+    left:0px;
+    z-index: 200;
+}
+
+#center_pane {
+    width: 45%;
+    position: absolute;
+    top: 0px;
+    left: 320px;
+    height:650px;
+}
+
+
+#right_pane {
+    width: 20%;
+    position: absolute;
+    top: 0px;
+    right:0px;
+    height:650px;
+}
+
+.sidenote{
+    font-size: 10px;
+    font-style: italic;
+}
+
+.package_label {
+    font-size: 14px;
+    padding-left: 30px;
+    padding-bottom: 6px;
+    background: url(images/blue/database.png) no-repeat 0 -5px;
+}
+
+.resource_label {
+    display: block;
+    cursor: pointer;
+    font-size: 14px;
+    border-width: 0px;
+    border-bottom-width: 1px;
+    border-style: solid;
+    border-color: #AAAAAA;
+    padding-left: 30px;
+    padding-bottom: 6px;
+    background: url(images/blue/connections.png) no-repeat 0 -5px;
+
+}
+.resource_label:hover{
+    color:#CCCCCC;
+}
+.preview_buttons {
+    font-size:10px;
+    margin-bottom: 5px;
+}
+
+#ontology .data_member {
+    padding: 5px 5px 5px 5px;
+    background-color: #BBBBBB;
+    border-width: 1px;
+    border-style: solid;
+    border-color: white;
+    font-weight: bold;
+    color:white;
+    margin-bottom: 5px;
+    font-size: 12px;
+    border-color: #BBBBBB;
+}
+
+#ontology .new_member {
+    border-width: 1px;
+    padding: 5px 5px 5px 5px;
+    border-style: solid;
+    border-color: #AAAAAA;
+    background-color: #CCCCCC;
+    font-size: 11px;
+    vertical-align: middle
+}
+
+#ontology .new_member input{
+    margin-right: 10px;
+}
+
+#ontology .new_member_button {
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 11px;
+
+}
+
+#vocabulary_lookup {
+    border-width: 1px;
+    padding: 5px 5px 5px 5px;
+    border-style: solid;
+    border-color: #AAAAAA;
+}
+
+#vocabulary_lookup select {
+    width:100%;
+}
+
+#vocabulary_lookup .subtitle{
+    color: gray;
+}
+
+#search_result .subtitle{
+    margin-top: 5px;
+    color: #0099cc;
+}
+
+.subtitle{
+    font-size:16px;
+    display:block;
+}
+
+.search_result_property {
+    background-color: #ff3333;
+    color:white;
+    margin-bottom: 5px;
+}
+
+.search_result_class {
+    background-color: #3333ff;
+    color:white;
+    margin-bottom: 5px;
+
+}
+
+.ui-draggable {
+    padding: 2px 2px 2px 2px;
+    box-shadow: 2px 2px 2px #888;
+}
+
+.ui-draggable-dragging {
+    box-shadow: 5px 5px 5px #888;
+}
+
+.highlight { 
+    color: #FF0000 
+}
+
+#ontology .mapping {
+    margin-left: 5px;
+    margin-bottom: 5px;
+    border-width: 1px;
+    padding: 5px 5px 5px 5px;
+    border-style: solid;
+    border-color: #AAAAAA;
+    font-size: 10px;
+}
+
+
+.title {
+
+    font-size: 18px;
+    color: #00B5FB;
+    display: block;
+    margin-bottom: 10px;
+
+}
+
+#no_ontology .create_ontology {
+    padding: 5px 5px 5px 5px;
+    background-color: #AAAAAA;
+    border-width: 1px;
+    border-style: solid;
+    border-color: white;
+    color:white;
+    margin-bottom: 5px;
+    font-size: 14px;
+
+    cursor: pointer
+}
+
+#no_ontology .create_ontology:hover {
+    background-color: #74b2e2;
+}
+
+#no_ontology .create_ontology_nr {
+    margin-right: 5px;
+    font-size: 18px;
+    color: #FFFFFF
+}
+
+.loading {
+    background: url(images/ajax-loader_blue.gif) no-repeat;
+    background-position: center;
+    height:100%;
+    width: 100%;
+    font-size: 14px;
+    color: #CCCCCC;
+    text-align: center;
+    vertical-align: middle;
+    font-family: Verdana,Arial,Helvetica,sans-serif;
+}
+
+#data_preview {
+    top: 300px;
+    margin-left: 10px;
+}
+
+#data_preview .box {
+    border-width: 1px;
+    padding: 5px 5px 5px 5px;
+    border-style: solid;
+    border-color: #AAAAAA;
+
+    -webkit-border-radius:5px;
+    -moz-border-radius:	5px;
+    -ms-border-radius:	5px;
+    -o-border-radius:	5px;
+    border-radius:	5px
+}
+
+#data_preview .box, #data_preview .box .antiscroll-inner {
+    width: 300px;
+    height: 360px;
+    font: 14px Helvetica, Arial;
+}
+
+#data_preview .box-wrap {
+    margin: 20px 40px;
+    border: 1px solid #999;
+}
+
+#data_preview .box-inner {
+    padding: 10px;
+    color: #999;
+    text-shadow: 0 1px 0 #fff;
+    font-size: 11px;
+}
+
+#search_result .box,#search_result .box .antiscroll-inner {
+    width: 200px;
+    height: 250px;
+}
+
+#search_result .box-wrap {
+    margin: 20px 40px;
+    border: 1px solid #999;
+}
+
+#search_result .box-inner {
+
+    padding: 10px;
+    color: #999;
+    text-shadow: 0 1px 0 #fff;
+    font-size: 11px;
+}
