@@ -2,9 +2,7 @@
  * The Semantifier script for communicating with The-DataTank instance.
  * https://github.com/iRail/The-Semantifier
  *
- * Copyright 2011: 
- * MMLab (Ghent University-IBBT) <http://multimedialab.elis.ugent.be/about> 
- * Miel Vander Sande <miel.vandersande@ugent.be>
+ * Copyright 2011, MultimediaLab (Ghent University-IBBT) <http://multimedialab.elis.ugent.be> 
  * 
  * Licensed under the AGPL 3.0 license.
  * http://www.gnu.org/licenses/agpl.txt
@@ -25,12 +23,15 @@
  *
  * Date: Mon Dec 5 00:00:00 2011 +0100
  * 
- * @author <a href="miel.vandersande@ugent.be">Miel Vander Sande</a>
+ * @copyright (C) 2011 by MMLab(Ghent University-IBBT) <http://multimedialab.elis.ugent.be> 
+ * @license AGPLv3
+ * @author Miel Vander Sande
  * 
  */
 
 /**
  * Gets ontology's matching searchterm from swoogle.
+ * Not yet implemented
  */
 function get_vocabularies(searchstring){
     $.ajax({
@@ -128,17 +129,19 @@ function create_ontology_error(data){
  * Adds a new mapping to a data member.
  *
  * @param {String} member_path Unique path of the member in the ontology
- * @param {DOMElement} map The div element containing all the information about the vocabulary property/class
+ * @param {String} map_name The name of the vocabulary member
+ * @param {String} map_nmsp The namespace of the vocabulary
+ * @param {String} map_prefix The prefix of the vocabulary
  */
-function add_mapping(member_path,map){
+function add_mapping(member_path,map_name,map_nmsp,map_prefix){
     $.ajax({
         url:host+"TDTInfo/Ontology/"+tdt_package+"/"+member_path,
         data:{
             update_type : 'ontology',
             method : 'map',
-            value : map.text(),
-            namespace : map.data('namespace'),
-            prefix : map.data('prefix')
+            value : map_name,
+            namespace : map_nmsp,
+            prefix : map_prefix
         },
         beforeSend: function (xhr) {
             xhr.setRequestHeader ("Authorization", "Basic " + $.base64.encode(api_usr + ":" + api_psw));
@@ -156,6 +159,8 @@ function add_mapping_success(data){
 function add_mapping_error(data){
     display_error_message("Mapping was not added to ontology");
 }
+
+
 
 /*
  * Adds a new member to the ontology.
@@ -188,6 +193,32 @@ function add_member_error(data){
 }
 
 /*
+ * Deletes a member from the ontology.
+ *
+ * @param {String} member_path Unique path of the member in the ontology
+ */
+function delete_member(member_path){
+    $.ajax({
+        url:host+"TDTInfo/Ontology/"+tdt_package+"/"+member_path,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader ("Authorization", "Basic " + $.base64.encode(api_usr + ":" + api_psw));
+        },
+        success:delete_member_success,
+        error:delete_member_error,
+        type:"DELETE"
+    });
+    
+}
+
+function delete_member_success(data){
+    get_ontology();
+}
+
+function delete_member_error(data){
+    display_error_message("Member was not deleted from ontology");
+}
+
+/*
  * Gets the data from the resource in the requested format.
  *
  */
@@ -205,5 +236,5 @@ function get_preview_success(data){
 }
 
 function get_preview_error(data){
-    display_error_message("Data for preview could not be retrieved");
+    //display_error_message("Data for preview could not be retrieved");
 }

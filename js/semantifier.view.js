@@ -2,9 +2,7 @@
  * The Semantifier script for the handling the view.
  * https://github.com/iRail/The-Semantifier
  *
- * Copyright 2011: 
- * MMLab (Ghent University-IBBT) <http://multimedialab.elis.ugent.be/about> 
- * Miel Vander Sande <miel.vandersande@ugent.be>
+ * Copyright 2011, MultimediaLab (Ghent University-IBBT) <http://multimedialab.elis.ugent.be> 
  * 
  * Licensed under the AGPL 3.0 license.
  * http://www.gnu.org/licenses/agpl.txt
@@ -43,6 +41,10 @@
  * http://jquery.org/license
  *
  * Date: Mon Dec 5 00:00:00 2011 +0100
+ * 
+ * @copyright (C) 2011 by MMLab(Ghent University-IBBT) <http://multimedialab.elis.ugent.be> 
+ * @license AGPLv3
+ * @author Miel Vander Sande
  */
 
 var tdt_resource = null;
@@ -245,7 +247,10 @@ function parse_node(node,uid) { // takes a node object and turns it into a <li>
         accept: '*',
         drop:function(event, ui)
         {
-            add_mapping(node.path,ui.draggable);
+            add_mapping(node.path,
+                ui.draggable.text(),
+                ui.draggable.data('namespace'),
+                ui.draggable.data('prefix'));
         },
         over:function(event,ui)
         {

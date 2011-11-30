@@ -2,9 +2,7 @@
  * The Semantifier configuration settings
  * https://github.com/iRail/The-Semantifier
  *
- * Copyright 2011: 
- * MMLab (Ghent University-IBBT) <http://multimedialab.elis.ugent.be/about> 
- * Miel Vander Sande <miel.vandersande@ugent.be>
+ * Copyright 2011, MultimediaLab (Ghent University-IBBT) <http://multimedialab.elis.ugent.be>  
  * 
  * Licensed under the AGPL 3.0 license.
  * http://www.gnu.org/licenses/agpl.txt
@@ -17,6 +15,9 @@
  * http://jquery.org/license
  *
  * Date: Mon Dec 5 00:00:00 2011 +0100
+ * @copyright (C) 2011 by MMLab(Ghent University-IBBT) <http://multimedialab.elis.ugent.be> 
+ * @license AGPLv3
+ * @author Miel Vander Sande
  */
 
 
