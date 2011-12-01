@@ -25,11 +25,23 @@
         <header>
         </header>
         <section id="content" class="body">
-            <div id="left_pane" class="ui-layout-west pane" title="Resources">
-                <div class="loading"></div>
-                <span class="title">Available resources</span>
-                <ul id="list" class="filetree">
-                </ul>
+            <div id="left_pane">
+                <div id="resources_list" class="ui-layout-west pane" title="Resources">
+                    <div class="loading"></div>
+                    <span class="title">Available resources</span>
+                    <ul id="list" class="filetree">
+                    </ul>
+                </div>
+                <div id="data_preview" title="Data preview" class="antiscroll-wrap pane">
+                    <div class="box">
+                        <div class="title">Preview</div>
+                        <div class="antiscroll-inner">
+                            <div class="box-inner">
+                                <div id="data_preview_content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div> 
             </div>
             <div id="center_pane" class="ui-layout-center pane" title="Ontology">
                 <span class="title"></span>
@@ -50,16 +62,7 @@
                 <div id="ontology">
                 </div>
             </div>
-            <div id="data_preview" title="Data preview" class="antiscroll-wrap">
-                <div class="box">
-                    <div class="title">Preview</div>
-                    <div class="antiscroll-inner">
-                        <div class="box-inner">
-                            <div id="data_preview_content"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>  
+
             <div id="right_pane" class="ui-layout-east pane" title="Ontology">
                 <div id="vocabulary_lookup">
                     <span class="subtitle">Choose vocabulary</span>

@@ -98,7 +98,7 @@ function fill_resources_tree(data){
                         a = $("<a/>").appendTo(resource_preview);
                         a.click(preview_clicked);
                         a.data("ext",".html");
-                        a.text("Model");
+                        a.text("HTML");
                         
                         resource_preview.append(" | ");
                         

@@ -27,6 +27,7 @@ header {
     -o-background-size: auto 60px;
     -webkit-background-size: auto 60px; 
     background-size: auto 60px;
+    margin-bottom: 10px;
 }
 
 .pane {
@@ -34,7 +35,6 @@ header {
     padding: 5px 5px 5px 5px;
     border-style: solid;
     border-color: #AAAAAA;
-    margin: 10px 10px 10px 10px;
     background-color: #FFFFFF;
 
     -webkit-border-radius:5px;
@@ -45,35 +45,47 @@ header {
 }
 
 #content {
-    top: 70px;
-    position: absolute;
-    left:0px;
-    width: 100%
+    display: -webkit-box; 
+    display: -moz-box; 
+    -moz-box-align: stretch; 
+    -webkit-box-align: stretch;
+    -moz-box-orient: horizontal;
+    -webkit-box-orient: horizontal;
 }
 
-#left_pane {
-    top: 0px;
-    width: 300px;
-    position: absolute;
-    left:0px;
-    z-index: 200;
+#left_pane{
+    width: 26%;
+    -moz-box-flex: 1;
+    -webkit-box-flex: 1;
+    display: -webkit-box; 
+    display: -moz-box; 
+    -moz-box-align: stretch; 
+    -webkit-box-align: stretch;
+    -moz-box-orient: vertical;
+    -webkit-box-orient: vertical;
+}
+
+#resources_list {
+    -moz-box-flex: 1;
+    -webkit-box-flex: 1;
+}
+
+#data_preview {
+    width: 96%;
+    -moz-box-flex: 2;
+    -webkit-box-flex: 2;
 }
 
 #center_pane {
-    width: 45%;
-    position: absolute;
-    top: 0px;
-    left: 320px;
-    height:640px;
+    width: 50%;
+    -moz-box-flex: 2;
+    -webkit-box-flex: 2;
 }
 
-
 #right_pane {
-    width: 20%;
-    position: absolute;
-    top: 0px;
-    right:0px;
-    height:640px;
+    width: 10%;
+    -moz-box-flex: 3;
+    -webkit-box-flex: 3;
 }
 
 .sidenote{
@@ -82,7 +94,7 @@ header {
 }
 
 .package_label {
-    font-size: 14px;
+    font-size: 13px;
     padding-left: 30px;
     padding-bottom: 6px;
     background: url(images/blue/database.png) no-repeat 0 -5px;
@@ -91,7 +103,7 @@ header {
 .resource_label {
     display: block;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 13px;
     border-width: 0px;
     border-bottom-width: 1px;
     border-style: solid;
@@ -105,7 +117,7 @@ header {
     color:#CCCCCC;
 }
 .preview_buttons {
-    font-size:10px;
+    font-size:9px;
     margin-bottom: 5px;
 }
 
@@ -208,7 +220,7 @@ header {
 
 .title {
 
-    font-size: 18px;
+    font-size: 16px;
     color: #00B5FB;
     display: block;
     margin-bottom: 10px;
@@ -250,44 +262,25 @@ header {
     font-family: Verdana,Arial,Helvetica,sans-serif;
 }
 
-#data_preview {
-    top: 300px;
-    margin-left: 10px;
-}
-
-#data_preview .box {
-    border-width: 1px;
-    padding: 5px 5px 5px 5px;
-    border-style: solid;
-    border-color: #AAAAAA;
-
-    -webkit-border-radius:5px;
-    -moz-border-radius:	5px;
-    -ms-border-radius:	5px;
-    -o-border-radius:	5px;
-    border-radius:	5px
-}
-
 #data_preview .box, #data_preview .box .antiscroll-inner {
-    width: 300px;
-    height: 350px;
+    width: 100%;
+    height: 300px;
     font: 14px Helvetica, Arial;
 }
 
 #data_preview .box-wrap {
-    margin: 20px 40px;
+    /*margin: 20px 40px;*/
     border: 1px solid #999;
 }
 
 #data_preview .box-inner {
-    padding: 10px;
+    /*padding: 10px;*/
     color: #999;
     text-shadow: 0 1px 0 #fff;
     font-size: 11px;
 }
 
 #search_result .box,#search_result .box .antiscroll-inner {
-    width: 200px;
     height: 260px;
 }
 
@@ -297,7 +290,6 @@ header {
 }
 
 #search_result .box-inner {
-
     padding: 10px;
     color: #999;
     text-shadow: 0 1px 0 #fff;
@@ -306,11 +298,11 @@ header {
 
 footer {
     font-size: 9px;
-    position: absolute;
+
     width: 90%;
-    bottom:5px;
+    margin-top: 10px;
     margin-left: 5%;
     margin-right: 5%
-    
+
 }
 
