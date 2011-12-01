@@ -29,10 +29,6 @@
  * 
  */
 
-/**
- * Authentication url
- */
-var auth_host = host+"semantifier/AuthenticatedAjax.php?url="+host;
 
 
 /**

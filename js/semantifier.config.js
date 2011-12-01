@@ -24,3 +24,7 @@
 var host = "http://localhost/TDT/";
 
 
+/**
+ * Authentication url
+ */
+var auth_host = "http://localhost/Semantifier/AuthenticatedAjax.php?url="+host;
