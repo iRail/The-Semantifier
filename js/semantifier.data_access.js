@@ -30,6 +30,12 @@
  */
 
 /**
+ * Authentication url
+ */
+var auth_host = host+"semantifier/AuthenticatedAjax.php?url="+host;
+
+
+/**
  * Gets ontology's matching searchterm from swoogle.
  * Not yet implemented
  */
@@ -106,11 +112,8 @@ function get_ontology_error(data){
  */
 function create_ontology(data){
     $.ajax({
-        url:host+"TDTInfo/Ontology/"+tdt_package+"/"+tdt_resource,
+        url:auth_host+"TDTInfo/Ontology/"+tdt_package+"/"+tdt_resource,
         data:data,
-        beforeSend: function (xhr) {
-            xhr.setRequestHeader ("Authorization", "Basic " + $.base64.encode(api_usr + ":" + api_psw));
-        },
         success:create_ontology_success,
         error:create_ontology_error,
         type:"PUT"
@@ -135,16 +138,13 @@ function create_ontology_error(data){
  */
 function add_mapping(member_path,map_name,map_nmsp,map_prefix){
     $.ajax({
-        url:host+"TDTInfo/Ontology/"+tdt_package+"/"+member_path,
+        url:auth_host+"TDTInfo/Ontology/"+tdt_package+"/"+member_path,
         data:{
             update_type : 'ontology',
             method : 'map',
             value : map_name,
             namespace : map_nmsp,
             prefix : map_prefix
-        },
-        beforeSend: function (xhr) {
-            xhr.setRequestHeader ("Authorization", "Basic " + $.base64.encode(api_usr + ":" + api_psw));
         },
         success:add_mapping_success,
         error:add_mapping_error,
@@ -170,12 +170,9 @@ function add_mapping_error(data){
  */
 function add_member(member_path,member_type){
     $.ajax({
-        url:host+"TDTInfo/Ontology/"+tdt_package+"/"+member_path,
+        url:auth_host+"TDTInfo/Ontology/"+tdt_package+"/"+member_path,
         data:{
             type:member_type
-        },
-        beforeSend: function (xhr) {
-            xhr.setRequestHeader ("Authorization", "Basic " + $.base64.encode(api_usr + ":" + api_psw));
         },
         success:add_member_success,
         error:add_member_error,
@@ -199,10 +196,7 @@ function add_member_error(data){
  */
 function delete_member(member_path){
     $.ajax({
-        url:host+"TDTInfo/Ontology/"+tdt_package+"/"+member_path,
-        beforeSend: function (xhr) {
-            xhr.setRequestHeader ("Authorization", "Basic " + $.base64.encode(api_usr + ":" + api_psw));
-        },
+        url:auth_host+"TDTInfo/Ontology/"+tdt_package+"/"+member_path,
         success:delete_member_success,
         error:delete_member_error,
         type:"DELETE"

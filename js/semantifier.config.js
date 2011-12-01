@@ -23,7 +23,4 @@
 
 var host = "http://localhost/TDT/";
 
-var api_usr = "tdtusr";
-var api_psw = "tdtusr";
-
 
