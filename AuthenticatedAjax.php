@@ -21,10 +21,6 @@ $url_query_param = "url"; // 'url'
 $url_header = "";
 $authz_header = 'HTTP_X_AUTHORIZATION';
 $return_all_headers = true;
-$cors_allow_origin  = null;
-$cors_allow_methods = 'GET, POST, PUT';
-$cors_allow_headers = 'Authorization, Content-Type';
-
 // ############################################################################
 
 $status = array();
@@ -52,21 +48,6 @@ if ( !$url ) {
     $status['status_text'] = 'Bad Request';
 
 } else {
-
-    if ( isset( $cors_allow_origin ) ) {
-        header( 'Access-Control-Allow-Origin: '.$cors_allow_origin );
-        if ( isset( $cors_allow_methods ) ) {
-            header( 'Access-Control-Allow-Methods: '.$cors_allow_methods );
-        }
-        if ( isset( $cors_allow_headers ) ) {
-            header( 'Access-Control-Allow-Headers: '.strtolower($cors_allow_headers) );
-        }
-        if ( isset($_SERVER['REQUEST_METHOD']) && 
-             ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') ) {
-            // We're done - don't proxy CORS OPTIONS request
-            exit();
-        }
-    }
 
     $ch = curl_init( $url );
 
