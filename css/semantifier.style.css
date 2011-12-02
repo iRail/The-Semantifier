@@ -25,7 +25,8 @@ header {
     background: url(images/TheSemantifier-LowRes.png) no-repeat;
     -moz-background-size:  auto 60px;
     -o-background-size: auto 60px;
-    -webkit-background-size: auto 60px; 
+    -webkit-background-size: auto 60px;
+    -ms-background-size: auto 60px; 
     background-size: auto 60px;
     margin-bottom: 10px;
 }
@@ -47,10 +48,13 @@ header {
 #content {
     display: -webkit-box; 
     display: -moz-box; 
+    display: -ms-box; 
     -moz-box-align: stretch; 
     -webkit-box-align: stretch;
+    -ms-box-align: stretch;
     -moz-box-orient: horizontal;
     -webkit-box-orient: horizontal;
+    -ms-box-orient: horizontal;
 }
 
 #left_pane{
@@ -58,34 +62,41 @@ header {
     -moz-box-flex: 1;
     -webkit-box-flex: 1;
     display: -webkit-box; 
-    display: -moz-box; 
-    -moz-box-align: stretch; 
+    display: -moz-box;
+    display: -ms-box;
+    -moz-box-align: stretch;
     -webkit-box-align: stretch;
+    -ms-box-align: stretch;
     -moz-box-orient: vertical;
     -webkit-box-orient: vertical;
+    -ms-box-orient: vertical;
 }
 
 #resources_list {
     -moz-box-flex: 1;
     -webkit-box-flex: 1;
+    -ms-box-flex: 1;
 }
 
 #data_preview {
     width: 96%;
     -moz-box-flex: 2;
     -webkit-box-flex: 2;
+    -ms-box-flex: 2;
 }
 
 #center_pane {
     width: 50%;
     -moz-box-flex: 2;
     -webkit-box-flex: 2;
+    -ms-box-flex: 2;
 }
 
 #right_pane {
     width: 10%;
     -moz-box-flex: 3;
     -webkit-box-flex: 3;
+    -ms-box-flex: 3;
 }
 
 .sidenote{
