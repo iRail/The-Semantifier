@@ -101,7 +101,7 @@ if ( !$url ) {
     curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
 
     //Addition by Pieter: added The DataTank username & password for authenticated POST calls
-    curl_setopt( $ch, CURLOPT_USERPWD, Config::$USER.':'.Config::$PASSWORD);   
+    curl_setopt( $ch, CURLOPT_USERPWD, Config::$API_USER.':'.Config::$API_PASSWD);   
     curl_setopt( $ch, CURLOPT_USERAGENT, 
                  isset($_GET['user_agent']) ? $_GET['user_agent'] : $_SERVER['HTTP_USER_AGENT'] );
   
