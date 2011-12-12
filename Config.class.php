@@ -12,8 +12,8 @@ class Config{
     //add trailing slash
     public static $SUBDIR = "";
     
-    public static $USER = "tdtusr";
-    public static $PASSWORD = "tdtusr";
+    public static $API_USER = "tdtusr";
+    public static $API_PASSWD = "tdtusr";
         
 }
 

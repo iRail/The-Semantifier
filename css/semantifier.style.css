@@ -30,7 +30,8 @@ header {
     background: url(images/TheSemantifier-LowRes.png) no-repeat;
     -moz-background-size:  auto 60px;
     -o-background-size: auto 60px;
-    -webkit-background-size: auto 60px; 
+    -webkit-background-size: auto 60px;
+    -ms-background-size: auto 60px; 
     background-size: auto 60px;
     margin-bottom: 10px;
 }
@@ -56,6 +57,7 @@ header {
     display: -o-box; 
     -moz-box-align: stretch; 
     -webkit-box-align: stretch;
+    -ms-box-align: stretch;
     -moz-box-orient: horizontal;
     -webkit-box-orient: horizontal;
     -o-box-align: stretch; 
