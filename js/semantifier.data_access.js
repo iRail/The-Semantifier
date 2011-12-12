@@ -35,7 +35,7 @@
  * Gets ontology's matching searchterm from swoogle.
  * Not yet implemented
  */
-function get_vocabularies(searchstring){
+function search_vocabularies(searchstring){
     $.ajax({
         url: "http://sparql.cs.umbc.edu:80/swoogle31/q",
         data: {
@@ -43,16 +43,34 @@ function get_vocabularies(searchstring){
             searchString: searchstring,
             key:"demo"
         },
-        success: get_vocabularies_success,
+        success: search_vocabularies_success,
         dataType: 'xml'
     });
 }
 
-function get_vocabularies_success(){
+function search_vocabularies_success(){
     
 }
 
-function get_vocabularies_error(){
+function search_vocabularies_error(){
+    display_error_message("Vocabulary could not be obtained");
+}
+
+function get_vocabulary(item,prefix){
+    $.ajax({
+        url: item.url,
+        data: {},
+        success: function(data){get_vocabulary_success(data,item,prefix)},
+        dataType: 'xml'
+    });
+}
+
+function get_vocabulary_success(data,item,prefix){
+    fill_vocabulary(data,item);
+    showVocabulary(item,prefix);
+}
+
+function get_vocabulary_error(){
     display_error_message("Vocabulary could not be obtained");
 }
 

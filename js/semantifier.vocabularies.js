@@ -81,3 +81,8 @@ vocabularies["mo"] = new Object();
 vocabularies["mo"]["name"] = "The Music Ontology";
 vocabularies["mo"]["namespace"] = "http://purl.org/ontology/mo/";
 */
+
+vocabularies["schema"] = new Object();
+vocabularies["schema"]["name"] = "Schema.org";
+vocabularies["schema"]["namespace"] = "http://schema.org/";
+vocabularies["schema"]["url"] = "ontology/schemaorg.owl"; //Link to a owl file to automatically get the classes and properties

@@ -38,8 +38,18 @@ function load_vocabulary(){
     $("#search_result_properties").empty();
     
     var prefix = $("select[@name=vocabulary_select] option:selected").val();
-    var selected_item = vocabularies[prefix];    
-        
+    
+    
+    var selected_item = vocabularies[prefix]; 
+    
+    if (selected_item.hasOwnProperty('url'))
+        get_vocabulary(selected_item,prefix);
+    else
+        showVocabulary(selected_item,prefix);
+}
+
+
+function showVocabulary(selected_item,prefix){
     $.each(selected_item.classes,function(index, value){
         var div = $("<div />");
         div.addClass("search_result_class");

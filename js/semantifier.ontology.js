@@ -131,3 +131,38 @@ function get_mapping_from_member(path){
     return mappings;
 }
 
+function fill_vocabulary(data,item){
+    var vocabulary = $.rdf().load(data,{});
+    
+    item.classes = new Array();
+    item.properties = new Array();
+    
+    
+    
+    vocabulary
+    .prefix('owl','http://www.w3.org/2002/07/owl#')
+    .prefix('rdf','http://www.w3.org/1999/02/22-rdf-syntax-ns#')
+    .where('?dataclass a owl:Class')
+    .each(function () {
+        var member = this.dataclass.value.toString();
+        if (member > item.namespace){
+            member = member.substring(item.namespace.length);
+            item.classes.push(member);
+        }
+    })
+    .end()
+    .where('?dataproperty a owl:DataProperty')
+    .each(function () {
+        var member = this.dataproperty.value.toString();
+        member = member.substring(item.namespace.length);
+        item.properties.push(member);
+    })
+    .end()
+    .where('?dataproperty a owl:ObjectProperty')
+    .each(function () {
+        var member = this.dataproperty.value.toString();
+        member = member.substring(item.namespace.length);
+        item.properties.push(member);
+    });
+}
+
