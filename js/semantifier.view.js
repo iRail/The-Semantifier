@@ -239,11 +239,11 @@ function parse_nodes(nodes,uid) { // takes a nodes array and turns it into a <ol
 
 function parse_node(node,uid) { // takes a node object and turns it into a <li>
     var li = $('<li/>');
-    var lbl = $("<div/>");
-    lbl.addClass('data_member');
-    lbl.data("path",node.path);
-    lbl.text(node.name);
-    lbl.droppable({
+    var div = $("<div/>");
+    div.addClass('data_member');
+    div.data("path",node.path);
+    div.text(node.name);
+    div.droppable({
         accept: '*',
         drop:function(event, ui)
         {
@@ -263,7 +263,7 @@ function parse_node(node,uid) { // takes a node object and turns it into a <li>
             $(this).css("color", "#FFFFFF");
         }
     });
-    li.append(lbl);
+    li.append(div);
     li.append(get_mapping_from_member(node.path));
     
     if(node.nodes) li.append(parse_nodes(node.nodes,uid));

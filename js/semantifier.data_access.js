@@ -155,7 +155,7 @@ function add_mapping(member_path,map_name,map_nmsp,map_prefix){
         url:auth_host+"TDTInfo/Ontology/"+tdt_package+"/"+member_path,
         data:{
             update_type : 'ontology',
-            method : 'map',
+            method : 'add_map',
             value : map_name,
             namespace : map_nmsp,
             prefix : map_prefix
@@ -172,6 +172,66 @@ function add_mapping_success(data){
 
 function add_mapping_error(data){
     display_error_message("Mapping was not added to ontology");
+}
+
+/*
+ * Preferres a mapping from a data member.
+ *
+ * @param {String} member_path Unique path of the member in the ontology
+ * @param {String} map_name The name of the vocabulary member
+ * @param {String} map_nmsp The namespace of the vocabulary
+ */
+function prefer_mapping(member_path,map_name,map_nmsp){
+    $.ajax({
+        url:auth_host+"TDTInfo/Ontology/"+tdt_package+"/"+member_path,
+        data:{
+            update_type : 'ontology',
+            method : 'prefer_map',
+            value : map_name,
+            namespace : map_nmsp
+        },
+        success:prefer_mapping_success,
+        error:prefer_mapping_error,
+        type:"POST"
+    });
+}
+
+function prefer_mapping_success(data){
+    get_ontology();
+}
+
+function prefer_mapping_error(data){
+    display_error_message("Mapping was not preferred");
+}
+
+/*
+ * Deletes a mapping from a data member.
+ *
+ * @param {String} member_path Unique path of the member in the ontology
+ * @param {String} map_name The name of the vocabulary member
+ * @param {String} map_nmsp The namespace of the vocabulary
+ */
+function delete_mapping(member_path,map_name,map_nmsp){
+    $.ajax({
+        url:auth_host+"TDTInfo/Ontology/"+tdt_package+"/"+member_path,
+        data:{
+            update_type : 'ontology',
+            method : 'delete_map',
+            value : map_name,
+            namespace : map_nmsp
+        },
+        success:delete_mapping_success,
+        error:delete_mapping_error,
+        type:"POST"
+    });
+}
+
+function delete_mapping_success(data){
+    get_ontology();
+}
+
+function delete_mapping_error(data){
+    display_error_message("Mapping was not deleted from ontology");
 }
 
 

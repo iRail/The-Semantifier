@@ -76,68 +76,85 @@ function get_mapping_from_member(path){
     var mappings = $("<div/>");
     
     current_ontology
+    .prefix('tdtml','http://www.thedatatank.org/tdml/1.0#')
     .where('<'+current_ontology.base()+path+'> owl:equivalentProperty ?map_property')
     .each(function () {
-        var resource_uri = this.map_property.dump().value;
-        
-        var index = resource_uri.lastIndexOf("#");
-        if (index == -1)
-            index = resource_uri.lastIndexOf("/");
-        
-        var namespace = resource_uri.substring(0,index+1);
-        var map = resource_uri.substring(index+1);
-
-        var prefix = current_namespaces[namespace];
-        
-        if (prefix != undefined){
-            mappings.append("<span class='mapping'><a href='"+namespace+map+"'>"+prefix+':'+map+"</a></span>");
-        } else {
-            mappings.append("<span class='mapping'><a href='"+namespace+map+"'>"+namespace+map+"</a></span>");
-        }
+        append_mapping(mappings, path, this.map_property.dump().value);
+    })
+    .end()
+    .where('<'+current_ontology.base()+path+'> tdtml:preferredProperty ?preferred_property')
+    .each(function () {
+        var preferred_map = mappings.children('span[title="'+this.preferred_property.dump().value+'"]');
+        preferred_map.addClass('mapping_preferred');
     })
     .end()
     .where('<'+current_ontology.base()+path+'> owl:equivalentClass ?map_class')
     .each(function () {
-        var resource_uri = this.map_class.dump().value;
-        
-        var index = resource_uri.lastIndexOf("#");
-        if (index == -1)
-            index = resource_uri.lastIndexOf("/");
-        
-        var namespace = resource_uri.substring(0,index+1);
-        var map = resource_uri.substring(index+1);
-
-        
-        var prefix = current_namespaces[namespace];
-        var map_span = $("<span class='mapping'/>").appendTo(mappings);
-        var map_a = $("<a href='"+namespace+map+"'/>").appendTo(map_span);
-        
-        map_a.mouseover(function(){
-            $("#data_preview").highlight($(this).text());
-        });
-        
-        map_a.mouseout(function(){
-            $("#data_preview").removeHighlight($(this).text());
-        });
-        
-        if (prefix != undefined){
-            map_a.text(prefix+':'+map);
-        } else {
-            mappings.append(namespace+map);
-        }
+        append_mapping(mappings, path, this.map_class.dump().value);
     })
     .end()
+    .where('<'+current_ontology.base()+path+'> tdtml:preferredClass ?preferred_class')
+    .each(function () {
+        var preferred_map = mappings.children('span[title="'+this.preferred_class.dump().value+'"]');
+        preferred_map.addClass('mapping_preferred');
+    })
+    .end();
 
     return mappings;
 }
+
+function append_mapping(mappings, path, resource_uri){
+       
+    var index = resource_uri.lastIndexOf("#");
+    if (index == -1)
+        index = resource_uri.lastIndexOf("/");
+        
+    var namespace = resource_uri.substring(0,index+1);
+    var map = resource_uri.substring(index+1);
+
+        
+    var prefix = current_namespaces[namespace];
+    var map_span = $("<span class='mapping'/>").appendTo(mappings);
+        
+    map_span.attr("title", namespace+map);
+    map_span.click(function(){
+        prefer_mapping(path,map,namespace);
+    });
+    
+    map_span.dblclick(function(){
+        window.open(namespace+map);        
+    });
+    
+    var map_label = $("<span class='mapping_label' />");
+    
+
+    map_label.mouseover(function(){
+        $("#data_preview").highlight($(this).text());
+    });
+        
+    map_label.mouseout(function(){
+        $("#data_preview").removeHighlight($(this).text());
+    });
+        
+    if (prefix != undefined){
+        map_span.append(map_label.text(prefix+':'+map));
+    } else {
+        map_span.append(map_label.text(namespace+map));
+    }
+    
+    var delete_span = $("<span class='delete'/>").appendTo(map_span);
+    delete_span.text("x");
+    delete_span.click(function(){
+        delete_mapping(path,map,namespace);
+    });
+}
+
 
 function fill_vocabulary(data,item){
     var vocabulary = $.rdf().load(data,{});
     
     item.classes = new Array();
     item.properties = new Array();
-    
-    
     
     vocabulary
     .prefix('owl','http://www.w3.org/2002/07/owl#')

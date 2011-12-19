@@ -238,15 +238,42 @@ header {
     margin-left: 5px;
     margin-bottom: 5px;
     border-width: 1px;
-    padding: 5px 5px 5px 5px;
+    padding: 6px 6px 6px 6px;
     border-style: solid;
     border-color: #AAAAAA;
     font-size: 10px;
+    cursor: pointer;
+    color:#AAAAAA;
+}
+
+#ontology .mapping:hover {
+    border-color: #74b2e2;
+}
+
+#ontology .mapping_preferred {
+    border-color: #74b2e2;
+    background-color: #85c3f3;
+    color:#ffffff;
+}
+
+#ontology .mapping .delete:hover, #ontology .mapping_preferred .delete:hover {
+    color:red;
+}
+
+.delete {
+    padding: 2px 2px 2px 2px;
+    width: 10px;
+    height: 10px;
+    font-size: 10px;
+    cursor: pointer;
+    margin-left:5px;
+    font-weight:bold;
 }
 
 
-.title {
 
+
+.title {
     font-size: 16px;
     color: #00B5FB;
     display: block;
@@ -332,4 +359,6 @@ footer {
     margin-right: 5%
 
 }
+
+
 
