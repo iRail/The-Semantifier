@@ -13,10 +13,6 @@
  * Copyright 2011, Johann Burkard <http://johannburkard.de> <mailto:jb@eaio.com>
  * Licensed under the MIT license(licenses/MIT-LICENSE.txt).
  * 
- * Includes antiscroll.js
- * 
- * Copyright (c) 2011 Guillermo Rauch <guillermo@learnboost.com>;
- * Licensed under the MIT license(licenses/MIT-LICENSE.txt).
  * 
  * Includes jquery.treeview.js
  * 
@@ -349,6 +345,4 @@ function display_preview(data){
         $("#data_preview_content").html(data);
     else
         $("#data_preview_content").text(data);
-    
-    $("#data_preview").antiscroll();
 }

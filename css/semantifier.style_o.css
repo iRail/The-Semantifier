@@ -1,0 +1,50 @@
+/*
+    Document   : semantifier.style_ie
+    Created on : Oct 26, 2011, 11:12:07 AM
+    Author     : Miel Vander Sande <miel.vandersande@ugent.be>
+    Description:
+        Stylesheet describing The Semantifier style corrections for Opera
+
+*/
+@media all and (-webkit-min-device-pixel-ratio:10000),not all and (-webkit-min-device-pixel-ratio:0) {
+    #left_pane {
+        width: 25%;
+        position: absolute;
+        top:80px;
+        left:0px;  
+
+    }
+
+
+    #center_pane {
+        display:block;
+        width: 53%;
+        position: absolute;
+        top:80px;
+        left:25%; 
+
+    }
+
+    #right_pane {
+        width: 20%;
+        position: absolute;
+        top:80px;
+        right:0px; 
+    }
+
+
+    footer {
+        position: absolute;
+        bottom: 0px;
+    }
+
+    #resources_list {
+
+    }
+
+    #data_preview {
+
+        width: 96%;
+        height: 380px;
+    }
+}

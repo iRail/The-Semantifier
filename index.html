@@ -4,7 +4,8 @@
         <title>The DataTank: The Semantifier</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link href="css/semantifier.style.css" rel="stylesheet" />
-        <link href="css/antiscroll.css" rel="stylesheet" />
+        <!--[if IE]> <link href="css/semantifier.style_ie.css" rel="stylesheet" type="text/css"> <![endif]-->
+        <link href="css/semantifier.style_o.css" rel="stylesheet" type="text/opera" media="all" />
         <link href="css/jquery.treeview.css" rel="stylesheet" />
         <link href="css/cupertino/jquery-ui-1.8.16.custom.css" rel="stylesheet" />
         <script src="lib/jquery-1.7.1.min.js" ></script>
@@ -13,15 +14,14 @@
         <script src="lib/jquery.rdfquery.core.min-1.0.js"></script>
         <script src="lib/jquery.base64.min.js"></script>
         <script src="lib/jquery.highlight-3.js"></script>
-        <script src="lib/antiscroll.js"></script>
-        <script src="lib/flexie.min.js"></script>
+
         <script src="js/semantifier.config.js"></script>
         <script src="js/semantifier.view.js" ></script>
         <script src="js/semantifier.data_access.js" ></script>
         <script src="js/semantifier.vocabulary_access.js" ></script>
         <script src="js/semantifier.vocabularies.js"></script>
         <script src="js/semantifier.ontology.js"></script>
-        
+
     </head>
     <body>
         <header>
@@ -34,15 +34,9 @@
                     <ul id="list" class="filetree">
                     </ul>
                 </div>
-                <div id="data_preview" title="Data preview" class="antiscroll-wrap pane">
-                    <div class="box">
-                        <div class="title">Preview</div>
-                        <div class="antiscroll-inner">
-                            <div class="box-inner">
-                                <div id="data_preview_content"></div>
-                            </div>
-                        </div>
-                    </div>
+                <div id="data_preview" title="Data preview" class="pane">
+                    <div class="title">Preview</div>
+                    <div id="data_preview_content"></div>
                 </div> 
             </div>
             <div id="center_pane" class="ui-layout-center pane" title="Ontology">
@@ -73,27 +67,15 @@
                 </div>
                 <div id="search_result">
                     <span class="subtitle">Classes</span>
-                    <div class="antiscroll-wrap">
-                        <div class="box">
-                            <div class="antiscroll-inner">
-                                <div class="box-inner">
-                                    <div id="search_result_classes" class="search_result_m "> 
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+
+                    <div id="search_result_classes" class="search_result_m"> 
                     </div>
+
                     <span class="subtitle">Properties</span>
-                    <div class="antiscroll-wrap">
-                        <div class="box">
-                            <div class="antiscroll-inner">
-                                <div class="box-inner"> 
-                                    <div id="search_result_properties" class="search_result_m">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+
+                    <div id="search_result_properties" class="search_result_m">
                     </div>
+
                 </div>
             </div>
         </section>

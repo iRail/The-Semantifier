@@ -78,6 +78,5 @@ function showVocabulary(selected_item,prefix){
         div.data("namespace",selected_item.namespace);
         $("#search_result_properties").append(div);
     });
-    
-    $("#search_result .antiscroll-wrap").antiscroll();
+
 }
