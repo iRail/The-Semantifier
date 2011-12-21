@@ -34,7 +34,7 @@ header {
     background-size: auto 60px;
     margin-bottom: 10px;
 
-    
+
 }
 
 .pane {
@@ -97,7 +97,7 @@ header {
     width: 550px;
     -moz-box-flex: 2;
     -webkit-box-flex: 2;
-    
+
 }
 
 
@@ -235,20 +235,26 @@ header {
     color: #FF0000 
 }
 
+#ontology .mapping_container{
+    width:100%;
+    overflow:auto;
+    padding-bottom: 5px;
+}
+
 #ontology .mapping {
     margin-left: 5px;
     margin-bottom: 5px;
-    border-width: 1px;
-    padding: 6px 6px 6px 6px;
-    border-style: solid;
-    border-color: #AAAAAA;
+    padding: 2px 2px 2px 2px;
     font-size: 10px;
     cursor: pointer;
-    color:#AAAAAA;
+    color:#000000;
+    background-color: #EEEEEE;
 }
 
 #ontology .mapping:hover {
     border-color: #74b2e2;
+    background-color: #85c3f3;
+    color:#ffffff;
 }
 
 #ontology .mapping_preferred {

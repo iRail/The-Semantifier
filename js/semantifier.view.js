@@ -51,7 +51,6 @@ var current_preview_format = '.html';
 var last_arr = new Array();
 
 $(document).ready(function() {
-   
     $("#no_ontology").hide();
     $("#new_member").hide();
     $("#create_ontology_file").hide();
@@ -260,8 +259,11 @@ function parse_node(node,uid) { // takes a node object and turns it into a <li>
         }
     });
     li.append(div);
-    li.append(get_mapping_from_member(node.path));
     
+    var mappings = get_mapping_from_member(node.path);
+    if (mappings.children().size()>0)
+        li.append(mappings);
+
     if(node.nodes) li.append(parse_nodes(node.nodes,uid));
     return li;
 }

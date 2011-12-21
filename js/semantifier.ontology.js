@@ -32,11 +32,16 @@ var current_ontology = null;
 
 function init_ontology(data){
     current_ontology = $.rdf().load(data, {});
-    current_ontology.base(data.documentElement.baseURI);
     
-    $.each($(data.documentElement).xmlns(),function(prefix,item){
-        current_namespaces[item.toString()] = prefix;        
-    });
+    
+    current_ontology.base(data.documentElement.attributes.getNamedItem('xml:base').nodeValue);
+    
+    
+    if (!($.browser.msie || $.browser.opera)) {
+           $.each($(data.documentElement).xmlns(),function(prefix,item){
+            current_namespaces[item.toString()] = prefix;        
+        });
+    }
 }
 
 function get_data_model_paths() {
@@ -73,7 +78,7 @@ function get_data_model_paths() {
 }
 
 function get_mapping_from_member(path){
-    var mappings = $("<div/>");
+    var mappings = $("<div class='mapping_container'/>");
     
     current_ontology
     .prefix('tdtml','http://www.thedatatank.org/tdml/1.0#')
@@ -99,7 +104,7 @@ function get_mapping_from_member(path){
         preferred_map.addClass('mapping_preferred');
     })
     .end();
-
+    
     return mappings;
 }
 
