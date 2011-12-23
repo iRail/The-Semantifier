@@ -81,16 +81,10 @@ function get_mapping_from_member(path){
     var mappings = $("<div class='mapping_container'/>");
     
     current_ontology
-    .prefix('tdtml','http://www.thedatatank.org/tdml/1.0#')
+    .prefix('tdtml','http://thedatatank.com/tdtml/1.0#')
     .where('<'+current_ontology.base()+path+'> owl:equivalentProperty ?map_property')
     .each(function () {
         append_mapping(mappings, path, this.map_property.dump().value);
-    })
-    .end()
-    .where('<'+current_ontology.base()+path+'> tdtml:preferredProperty ?preferred_property')
-    .each(function () {
-        var preferred_map = mappings.children('span[title="'+this.preferred_property.dump().value+'"]');
-        preferred_map.addClass('mapping_preferred');
     })
     .end()
     .where('<'+current_ontology.base()+path+'> owl:equivalentClass ?map_class')
@@ -98,7 +92,7 @@ function get_mapping_from_member(path){
         append_mapping(mappings, path, this.map_class.dump().value);
     })
     .end()
-    .where('<'+current_ontology.base()+path+'> tdtml:preferredClass ?preferred_class')
+    .where('<'+current_ontology.base()+path+'> tdtml:preferredMap ?preferred_class')
     .each(function () {
         var preferred_map = mappings.children('span[title="'+this.preferred_class.dump().value+'"]');
         preferred_map.addClass('mapping_preferred');
@@ -173,7 +167,7 @@ function fill_vocabulary(data,item){
         }
     })
     .end()
-    .where('?dataproperty a owl:DataProperty')
+    .where('?dataproperty a owl:DatatypeProperty')
     .each(function () {
         var member = this.dataproperty.value.toString();
         member = member.substring(item.namespace.length);
