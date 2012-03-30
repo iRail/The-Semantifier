@@ -60,7 +60,12 @@ function get_vocabulary(item,prefix){
     $.ajax({
         url: item.url,
         data: {},
-        success: function(data){get_vocabulary_success(data,item,prefix)},
+        success: function(data){
+            get_vocabulary_success(data,item,prefix)
+        },
+        error: function(data,textStatus,errorThrown){
+            get_vocabulary_error();
+        },
         dataType: 'xml'
     });
 }

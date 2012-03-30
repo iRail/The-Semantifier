@@ -10,10 +10,10 @@ class Config{
     
     public static $HOSTNAME = "http://localhost/";
     //add trailing slash
-    public static $SUBDIR = "";
+    public static $SUBDIR = "TDT_develop";
     
-    public static $API_USER = "tdtusr";
-    public static $API_PASSWD = "tdtusr";
+    public static $API_USER = "usr_name";
+    public static $API_PASSWD = "usr_pass";
         
 }
 

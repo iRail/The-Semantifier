@@ -41,12 +41,6 @@ vocabularies["lode"]["namespace"] = "http://linkedevents.org/ontology/";
 vocabularies["lode"]["classes"] = new Array("Event");
 vocabularies["lode"]["properties"] = new Array("atPlace","atTime","circa","illustrate","inSpace","involved","involvedAgent");
 
-vocabularies["skos"] = new Object();
-vocabularies["skos"]["name"] = "Simple Knowledge Organization System Reference";
-vocabularies["skos"]["namespace"] = "http://www.w3.org/2004/02/skos/core#";
-vocabularies["skos"]["classes"] = new Array("Concept","ConceptScheme","Collection","OrderedCollection");
-vocabularies["skos"]["properties"] = new Array("inScheme","hasTopConcept","topConceptOf","altLabel","hiddenLabel","prefLabel","notation","changeNote","definition","editorialNote","example","historyNote","note","scopeNote","broader","broaderTransitive","narrower","narrowerTransitive","related","semanticRelation","member","memberList","broadMatch","closeMatch","exactMatch","mappingRelation","narrowMatch","relatedMatch");
-
 vocabularies["v"] = new Object();
 vocabularies["v"]["name"] = "Representing vCard Objects";
 vocabularies["v"]["namespace"] = "http://www.w3.org/2006/vcard/ns#";
@@ -86,3 +80,13 @@ vocabularies["schema"] = new Object();
 vocabularies["schema"]["name"] = "Schema.org";
 vocabularies["schema"]["namespace"] = "http://schema.org/";
 vocabularies["schema"]["url"] = "ontology/schemaorg.owl"; //Link to a owl file to automatically get the classes and properties
+
+vocabularies["skosxl"] = new Object();
+vocabularies["skosxl"]["name"] = "Simple Knowledge Organization System eXtension for Labels";
+vocabularies["skosxl"]["namespace"] = "http://www.w3.org/2008/05/skos-xl#";
+vocabularies["skosxl"]["url"] = "ontology/skos-xl.rdf"; //Link to a owl file to automatically get the classes and properties
+
+vocabularies["skos"] = new Object();
+vocabularies["skos"]["name"] = "Simple Knowledge Organization System Reference";
+vocabularies["skos"]["namespace"] = "http://www.w3.org/2004/02/skos/core#";
+vocabularies["skos"]["url"] = "ontology/skos.rdf"; //Link to a owl file to automatically get the classes and properties

@@ -21,7 +21,7 @@
  */
 
 
-var host = "http://localhost/TDT/";
+var host = "http://localhost/TDT_develop/";
 
 
 /**
