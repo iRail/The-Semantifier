@@ -131,7 +131,7 @@ function get_ontology_error(data){
  */
 function create_ontology(data){
     $.ajax({
-        url:auth_host+"TDTInfo/Ontology/"+tdt_package+"/"+tdt_resource,
+        url:auth_host+"TDTAdmin/Ontology/"+tdt_package+"/"+tdt_resource,
         data:data,
         success:create_ontology_success,
         error:create_ontology_error,
@@ -157,7 +157,7 @@ function create_ontology_error(data){
  */
 function add_mapping(member_path,map_name,map_nmsp,map_prefix){
     $.ajax({
-        url:auth_host+"TDTInfo/Ontology/"+tdt_package+"/"+member_path,
+        url:auth_host+"TDTAdmin/Ontology/"+tdt_package+"/"+member_path,
         data:{
             update_type : 'ontology',
             method : 'add_map',
@@ -188,7 +188,7 @@ function add_mapping_error(data){
  */
 function prefer_mapping(member_path,map_name,map_nmsp){
     $.ajax({
-        url:auth_host+"TDTInfo/Ontology/"+tdt_package+"/"+member_path,
+        url:auth_host+"TDTAdmin/Ontology/"+tdt_package+"/"+member_path,
         data:{
             update_type : 'ontology',
             method : 'prefer_map',
@@ -218,7 +218,7 @@ function prefer_mapping_error(data){
  */
 function delete_mapping(member_path,map_name,map_nmsp){
     $.ajax({
-        url:auth_host+"TDTInfo/Ontology/"+tdt_package+"/"+member_path,
+        url:auth_host+"TDTAdmin/Ontology/"+tdt_package+"/"+member_path,
         data:{
             update_type : 'ontology',
             method : 'delete_map',
@@ -249,7 +249,7 @@ function delete_mapping_error(data){
  */
 function add_member(member_path,member_type){
     $.ajax({
-        url:auth_host+"TDTInfo/Ontology/"+tdt_package+"/"+member_path,
+        url:auth_host+"TDTAdmin/Ontology/"+tdt_package+"/"+member_path,
         data:{
             type:member_type
         },
@@ -275,7 +275,7 @@ function add_member_error(data){
  */
 function delete_member(member_path){
     $.ajax({
-        url:auth_host+"TDTInfo/Ontology/"+tdt_package+"/"+member_path,
+        url:auth_host+"TDTAdmin/Ontology/"+tdt_package+"/"+member_path,
         success:delete_member_success,
         error:delete_member_error,
         type:"DELETE"
