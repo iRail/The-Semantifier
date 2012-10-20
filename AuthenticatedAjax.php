@@ -16,7 +16,7 @@ include_once("Config.class.php");
 $enable_jsonp    = false;
 $enable_native   = true;
 $host = str_ireplace("/","\/",Config::$HOSTNAME);
-$valid_url_regex = '/'. $host .'/';
+$valid_url_regex = '/.*?/';
 $url_query_param = "url"; // 'url'
 $url_header = "";
 $authz_header = 'HTTP_X_AUTHORIZATION';

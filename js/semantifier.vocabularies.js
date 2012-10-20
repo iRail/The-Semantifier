@@ -90,3 +90,8 @@ vocabularies["skos"] = new Object();
 vocabularies["skos"]["name"] = "Simple Knowledge Organization System Reference";
 vocabularies["skos"]["namespace"] = "http://www.w3.org/2004/02/skos/core#";
 vocabularies["skos"]["url"] = "ontology/skos.rdf"; //Link to a owl file to automatically get the classes and properties
+
+vocabularies["transit"] = new Object();
+vocabularies["transit"]["name"] = "Transit ontology";
+vocabularies["transit"]["namespace"] = "http://vocab.org/transit/terms/";
+vocabularies["transit"]["url"] = "ontology/transit.rdf"; //Link to a owl file to automatically get the classes and properties
